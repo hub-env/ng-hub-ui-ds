@@ -21,6 +21,7 @@ component libraries for standalone apps.
 
 - Docs: https://hubui.dev/en/design-system/
 - Hub UI: https://hubui.dev/en/
+- Hub UI on GitHub (issues, roadmap and contributing): https://github.com/hub-env/hub-ui
 
 ## 🧩 Library Family `ng-hub-ui`
 
@@ -408,7 +409,7 @@ Contributions are welcome.
 4. **Push** to your branch: `git push origin feature/amazing-feature`.
 5. **Submit** a pull request.
 
-Repository: https://github.com/carlos-morcillo/ng-hub-ui-ds
+Repository: https://github.com/hub-env/ng-hub-ui-ds
 
 ## ☕ Support
 

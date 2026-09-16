@@ -21,6 +21,7 @@ librerías de componentes Angular para aplicaciones standalone.
 
 - Documentación: https://hubui.dev/en/design-system/
 - Hub UI: https://hubui.dev/en/
+- Hub UI en GitHub (incidencias, roadmap y cómo contribuir): https://github.com/hub-env/hub-ui
 
 ## 🧩 Familia de librerías `ng-hub-ui`
 
@@ -406,7 +407,7 @@ Las contribuciones son bienvenidas.
 4. **Haz push** a tu rama: `git push origin feature/amazing-feature`.
 5. **Abre** un pull request.
 
-Repositorio: https://github.com/carlos-morcillo/ng-hub-ui-ds
+Repositorio: https://github.com/hub-env/ng-hub-ui-ds
 
 ## ☕ Apoyo
 
