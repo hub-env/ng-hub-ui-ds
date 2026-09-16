@@ -1,6 +1,6 @@
 {
 	"name": "ng-hub-ui-ds",
-	"version": "22.11.3",
+	"version": "22.11.4",
 	"license": "MIT",
 	"scripts": {
 		"build:tokens": "sass styles/tokens/hub-tokens.scss styles/tokens/hub-tokens.css --style=expanded --no-source-map",
