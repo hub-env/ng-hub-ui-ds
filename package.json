@@ -27,7 +27,18 @@
 		"dark-mode",
 		"scss",
 		"ng-hub-ui",
-		"hub-ui"
+		"hub-ui",
+		"tokens",
+		"css-custom-properties",
+		"theming",
+		"themes",
+		"color-palette",
+		"spacing",
+		"typography",
+		"css",
+		"angular",
+		"ui-library",
+		"framework-agnostic"
 	],
 	"sideEffects": [
 		"**/*.css",
