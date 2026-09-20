@@ -5,6 +5,15 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.11.5] - 2026-09-20
+
+### Changed
+
+- The npm keywords say that this package is the token layer — `tokens`, `css-custom-properties`,
+  `theming`, `themes`, `color-palette`, `spacing`, `typography` — and that it is
+  `framework-agnostic`, which is the reason somebody outside Angular would install it at all.
+  Metadata only: no token, variable or style changes.
+
 ## [22.11.4] - 2026-09-16
 
 ### Changed
