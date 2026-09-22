@@ -10,7 +10,7 @@
 		"prepublishOnly": "npm run build:styles"
 	},
 	"description": "Design tokens for the ng-hub-ui family — the canonical `--hub-ref-*` (primitive) and `--hub-sys-*` (semantic) CSS custom properties, with light/dark and 8 built-in themes. Framework-agnostic: ship the compiled CSS or the SCSS source. Import once and every ng-hub-ui library reads the same palette.",
-	"author": "Carlos Morcillo <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)",
+	"author": "Carlos Morcillo Fernández <carlos.morcillo@me.com> (https://www.carlosmorcillo.com)",
 	"homepage": "https://hubui.dev/en/design-system/",
 	"repository": {
 		"type": "git",
