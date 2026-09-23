@@ -2635,7 +2635,7 @@ The navigation strip is **semantic-accent aware**: a single `--hub-panels-accent
 | `--hub-panels-tab-padding-x` | `var(--hub-panels-nav-link-padding-x)` | Tab horizontal padding | `IN_USE` | `panels/src/lib/components/panels/panels.variables.scss:62` |
 | `--hub-panels-tab-padding-y` | `var(--hub-panels-nav-link-padding-y)` | Tab vertical padding | `IN_USE` | `panels/src/lib/components/panels/panels.variables.scss:63` |
 | `--hub-panels-tab-transition` | `var(--hub-sys-transition-base, all 0.2s ease-in-out)` | Tab state transition | `IN_USE` | `panels/src/lib/components/panels/panels.variables.scss:85` |
-| `--hub-panels-multiple-vertical-panel-min-width` | runtime (`0px`) | Min content width per `multiple + vertical` block, from the measured header height | `INTERNAL` | `panels/src/lib/components/panels/panels.component.ts:765` |
+| `--hub-panels-multiple-vertical-panel-min-width` | runtime (`0px`) | Min content width per `multiple + vertical` block, from the measured header height | `INTERNAL` | `panels/src/lib/components/panels/panels.component.ts:805` |
 | `--hub-side-panel-bg` | `var(--hub-sys-surface-page, #fff)` | <hub-side-panel> surface background | `IN_USE` | `panels/src/lib/components/side-panel/side-panel.component.scss:41` |
 | `--hub-side-panel-body-padding` | `var(--hub-side-panel-padding-y) var(--hub-side-panel-padding-x)` | <hub-side-panel> scrolling body padding (`0` for a flush chat) | `IN_USE` | `panels/src/lib/components/side-panel/side-panel.component.scss:107` |
 | `--hub-side-panel-border-color` | `var(--hub-sys-border-color-default, #dee2e6)` | <hub-side-panel> edge and header/footer divider colour | `IN_USE` | `panels/src/lib/components/side-panel/side-panel.component.scss:20` |
