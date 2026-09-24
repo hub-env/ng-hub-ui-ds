@@ -5,6 +5,27 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.13.0] - 2026-09-24
+
+### Fixed
+
+- **Muted text is readable on the elevated surface.** `--hub-sys-text-muted` was the ref ramp's
+  `gray-600` (`#6c757d`), which reads 4.69:1 on `#ffffff` but **4.44:1** on `#f8f9fa` — under the
+  4.5:1 of WCAG 1.4.3, and `#f8f9fa` is the surface a card, a table head, an input group addon or
+  a form hint actually sits on. It is now `#6a737b`, the same hue one step darker, at **4.83:1**
+  on the page and **4.58:1** on the elevated surface. Both the light/base theme and `bootstrap`
+  carried the failing grey; the other five built-ins were already clear and are untouched
+  (`dark` 8.03:1, `sunset` 6.38:1, `forest` 6.44:1, `mono` 6.87:1, `terminal` 5.55:1, worst
+  surface each). `--hub-sys-color-text-subtle` follows, being an alias of it.
+
+### Added
+
+- **The text roles have a test of their own.** `tests/text-contrast.spec.mjs` walks every
+  `--hub-sys-text-*` role against both surfaces of every theme in the compiled sheet and fails
+  under the minimum the package itself states in `--hub-sys-text-contrast-min`. Themes, roles and
+  the threshold are read from the sheet, so a new theme or a new text token is covered without
+  editing the test. It runs as `npm test` and gates `prepublishOnly`.
+
 ## [22.12.0] - 2026-09-23
 
 ### Fixed

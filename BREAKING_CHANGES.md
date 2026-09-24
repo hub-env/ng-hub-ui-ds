@@ -2,6 +2,37 @@
 
 This document tracks all breaking changes in the `ng-hub-ui-ds` package.
 
+## v22.13.0
+
+### Muted text is a darker grey
+
+- **Change**: `--hub-sys-text-muted` goes from `#6c757d` to `#6a737b` on the light/base theme and
+  on `bootstrap`. `--hub-sys-color-text-subtle` is an alias of it and moves with it. No token is
+  renamed and no other theme changes.
+- **Impact**: visible the day you upgrade, wherever muted text is painted — form hints and
+  placeholders, table and card subtitles, breadcrumb separators, calendar other-month days,
+  file-input size labels. The step is 0.8% of lightness at the same hue (208.2°), so it reads as
+  the same grey rather than a new one; a side-by-side screenshot diff will show it, a user will
+  not. Anything that hard-codes `#6c757d` to sit next to muted text — your own literal, or the
+  `var(--hub-sys-text-muted, #6c757d)` fallback written into a stylesheet of your own — is now
+  the odd one out by a shade, and is also the value that fails the contrast check.
+- **Migration**: nothing, if you take the accessible default. To hold the old grey, set it back
+  and know what it measures:
+
+    ```css
+    :root {
+    	--hub-sys-text-muted: #6c757d; /* 4.44:1 on the elevated surface — fails 1.4.3 */
+    }
+    ```
+
+    If you carry your own `var(--hub-sys-text-muted, #6c757d)` fallbacks, update the literal to
+    `#6a737b` so the fallback is not the failing value the day this package is absent.
+
+- **Why**: the elevated surface is not an edge case — it is where a card, a table head and an
+  input group addon live, and muted text is body text, so 4.5:1 applies to it in full. `#6c757d`
+  missed it by six hundredths, which is the kind of miss nobody sees in review and everybody
+  inherits. `npm test` in this package now fails if any text role slips back under the minimum.
+
 ## v22.12.0
 
 ### The focus ring is opaque and 2px, and the accent colours move on dark themes

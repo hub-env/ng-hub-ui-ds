@@ -498,8 +498,15 @@ $hub-accents-terminal: (
 	   not the `secondary` ACCENT (a blue in most themes). */
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
-	--hub-sys-text-muted: var(--hub-ref-color-gray-600, #6c757d);
-	--hub-sys-color-text-subtle: var(--hub-sys-text-muted, #6c757d);
+	/* Muted is body text, so it answers to 4.5:1 — and the ref ramp's `gray-600`
+	   (#6c757d) does not get there: 4.69:1 on the page but 4.44:1 on the elevated
+	   surface, which is the one a card, a table head or an input sits on. #6a737b is
+	   the same hue (208.2°) taken down 0.8% of lightness, and reads 4.83:1 / 4.58:1.
+	   It is a literal rather than a new ref step because the grey ramp is a 100–900
+	   scale and `gray-600` still serves the `secondary` and `neutral` accents, which
+	   are not text and must not move with it. */
+	--hub-sys-text-muted: #6a737b;
+	--hub-sys-color-text-subtle: var(--hub-sys-text-muted, #6a737b);
 	/* A link is body text, so it answers to 4.5:1, and the raw accent does not get
 	   there: #0d6efd measures 4.50:1 on #fff but 4.27:1 on the elevated surface, and
 	   `secondary`/`warning`-keyed themes are worse. The emphasis role is the one
@@ -656,8 +663,9 @@ $hub-accents-terminal: (
 /* ============================================================
    LAYER 2 — sys (base alias)
    Base is equivalent to light theme and works as explicit default.
-   Every value here comes from the ref layer, so the package carries no
-   dependency on any other framework's variables.
+   Values come from the ref layer wherever a ref step says the right thing, and
+   from a literal where none does; either way the package carries no dependency
+   on any other framework's variables.
    ============================================================ */
 
 :root,
@@ -672,7 +680,8 @@ $hub-accents-terminal: (
 	   not the `secondary` ACCENT (a blue in most themes). */
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
-	--hub-sys-text-muted: var(--hub-ref-color-gray-600, #6c757d);
+	/* Literal, not `gray-600`: that grey reads 4.44:1 on the elevated surface. */
+	--hub-sys-text-muted: #6a737b;
 	--hub-sys-border-color-default: var(--hub-ref-color-gray-300, #dee2e6);
 	--hub-sys-state-hover-bg: rgba(0, 0, 0, 0.075);
 	--hub-sys-state-active-bg: rgba(0, 0, 0, 0.1);
@@ -698,7 +707,10 @@ $hub-accents-terminal: (
 	   not the `secondary` ACCENT (a blue in most themes). */
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
-	--hub-sys-text-muted: #6c757d;
+	/* Bootstrap's own `$gray-600` is #6c757d, and it fails the same way here as it
+	   does there: 4.44:1 on the elevated surface. The look survives one step of
+	   darkening, the reading does not survive leaving it. */
+	--hub-sys-text-muted: #6a737b;
 	/* Links and the focus ring are derived from this theme's own primary now. The
 	   literals that used to sit here were the failing pair: #0d6efd reads 4.27:1 on
 	   the elevated surface and the ring washed out at 1.41:1. What derives in their
