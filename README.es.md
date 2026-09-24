@@ -145,11 +145,11 @@ propios estilos:
 
 Los tokens siguen un sistema por capas:
 
-| Capa            | Prefijo             | Qué es                                                       | Ejemplos                                                                |
-| --------------- | ------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| **Referencia**  | `--hub-ref-*`       | Valores crudos, sin contexto                                 | `--hub-ref-color-blue-500`, `--hub-ref-space-3`, `--hub-ref-radius-md`  |
-| **Sistema**     | `--hub-sys-*`       | Asignaciones con significado que consumen los componentes    | `--hub-sys-color-primary`, `--hub-sys-surface-page`, `--hub-sys-text-primary` |
-| **Container**   | `--hub-container-*` | Puente heredable de `sys` a contenedores/slots concretos — un **re-base hook** | `--hub-container-bg`, `--hub-container-padding-x`, `--hub-container-gap` |
+| Capa             | Prefijo                                                  | Qué es                                                                                                                                                                                   | Ejemplos                                                                           |
+| ---------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **Referencia**   | `--hub-ref-*`                                            | Valores crudos, sin contexto                                                                                                                                                             | `--hub-ref-color-blue-500`, `--hub-ref-space-3`, `--hub-ref-radius-md`             |
+| **Sistema**      | `--hub-sys-*`                                            | Asignaciones con significado que consumen los componentes                                                                                                                                | `--hub-sys-color-primary`, `--hub-sys-surface-page`, `--hub-sys-text-primary`      |
+| **Container**    | `--hub-container-*`                                      | Puente heredable de `sys` a contenedores/slots concretos — un **re-base hook**                                                                                                           | `--hub-container-bg`, `--hub-container-padding-x`, `--hub-container-gap`           |
 | **Base / shell** | `--hub-body-*` · `--hub-main-*` · `--hub-main-wrapper-*` | Layout del _application shell_: el wrapper exterior de la página, la región de contenido y su wrapper centrado. `--hub-body-*` **hereda los valores por defecto de `--hub-container-*`** | `--hub-body-padding-x`, `--hub-main-bg`, `--hub-main-wrapper-max-width` (`1200px`) |
 
 Regla de oro: **los componentes referencian solo tokens `sys`**. Los `sys`
@@ -189,13 +189,13 @@ defecto es `primary` · `secondary` · `success` · `danger` · `warning` · `in
 `light` · `dark`, y es **abierto**: cada variante que añadas obtiene la misma familia (ver
 [Cómo modificarlo](#️-cómo-modificarlo)).
 
-| Token                               | Uso típico                                     |
-| ----------------------------------- | ---------------------------------------------- |
-| `--hub-sys-color-<v>`               | Color sólido (acento, icono, borde fuerte)     |
-| `--hub-sys-color-<v>-subtle`        | Fondo tenue (banners, alertas)                 |
-| `--hub-sys-color-<v>-border-subtle` | Borde tenue sobre el fondo subtle              |
-| `--hub-sys-color-<v>-emphasis`      | Texto legible sobre el fondo subtle            |
-| `--hub-sys-color-<v>-on`            | Color de texto/icono con contraste **sobre** el acento |
+| Token                               | Uso típico                                                                        |
+| ----------------------------------- | --------------------------------------------------------------------------------- |
+| `--hub-sys-color-<v>`               | Color sólido (acento, icono, borde fuerte)                                        |
+| `--hub-sys-color-<v>-subtle`        | Fondo tenue (banners, alertas)                                                    |
+| `--hub-sys-color-<v>-border-subtle` | Borde tenue sobre el fondo subtle                                                 |
+| `--hub-sys-color-<v>-emphasis`      | Texto legible sobre la superficie — los enlaces y el halo de foco también lo leen |
+| `--hub-sys-color-<v>-on`            | Color de texto/icono con contraste **sobre** el acento                            |
 
 Ejemplo de uso (un aviso a juego con el resto de la familia):
 
@@ -216,7 +216,7 @@ contenedor para tematizar una zona):
 
 ```html
 <html data-theme="dark">
-  <!-- light (por defecto) · base · bootstrap · dark · sunset · forest · mono · terminal -->
+	<!-- light (por defecto) · base · bootstrap · dark · sunset · forest · mono · terminal -->
 </html>
 ```
 
@@ -232,9 +232,9 @@ Además de los tokens, el paquete incluye una capa de estilos opt-in — no se e
 **Hojas de utilidades** — los nombres de clase son **exactamente los de Bootstrap** y cada valor resuelve a los tokens canónicos. No cargues estas hojas Y Bootstrap globalmente en el mismo documento. Cada hoja tiene además su gemela `.css` compilada para apps sin Sass:
 
 ```scss
-@use 'ng-hub-ui-ds/styles/utilities/layout';    // display/flex (+ responsive), grid de 12 col + offsets, spacing, sizing, position, overflow, order, .vr, .ratio-*, .visually-hidden…
-@use 'ng-hub-ui-ds/styles/utilities/text';      // .fs-1…6, .h1…6, .fw-*, .lh-*, .text-truncate, colores de texto semánticos
-@use 'ng-hub-ui-ds/styles/utilities/surfaces';  // .bg-* (+ -subtle), .text-bg-*, .border*, .rounded*, .shadow*, .opacity-*
+@use 'ng-hub-ui-ds/styles/utilities/layout'; // display/flex (+ responsive), grid de 12 col + offsets, spacing, sizing, position, overflow, order, .vr, .ratio-*, .visually-hidden…
+@use 'ng-hub-ui-ds/styles/utilities/text'; // .fs-1…6, .h1…6, .fw-*, .lh-*, .text-truncate, colores de texto semánticos
+@use 'ng-hub-ui-ds/styles/utilities/surfaces'; // .bg-* (+ -subtle), .text-bg-*, .border*, .rounded*, .shadow*, .opacity-*
 ```
 
 Los únicos nombres fuera de Bootstrap son los primitivos de layout que reflejan los mixins: `.stack`, `.cluster`, `.grid-auto`, `.center`.
@@ -250,10 +250,21 @@ Los únicos nombres fuera de Bootstrap son los primitivos de layout que reflejan
 ```scss
 @use 'ng-hub-ui-ds' as hub;
 
-.toolbar     { @include hub.cluster($gap: 2); }
-.card__title { @include hub.font-size(4); @include hub.font-weight(semibold); }
-.card--brand { @include hub.text-bg(brand); @include hub.radius(lg); @include hub.shadow(sm); }
-.sr-label    { @include hub.visually-hidden(); }
+.toolbar {
+	@include hub.cluster($gap: 2);
+}
+.card__title {
+	@include hub.font-size(4);
+	@include hub.font-weight(semibold);
+}
+.card--brand {
+	@include hub.text-bg(brand);
+	@include hub.radius(lg);
+	@include hub.shadow(sm);
+}
+.sr-label {
+	@include hub.visually-hidden();
+}
 ```
 
 Grupos: **tema** (`theme()` — tematización parcial en una llamada: pásale solo las escalas/acentos cambiados como mapas), **breakpoints** (`media-breakpoint-up/down` sobre el mapa `$hub-breakpoints` — de él se generan las variantes responsive `.d-md-*`, `.col-lg-*`, `.p-sm-*`…), **layout** (`stack`, `cluster`, `grid`, `grid-fixed`, `row`, `col`, `offset`, `center`), **tipografía** (`font-family`, `font-size`, `font-weight`, `line-height`, `text-color`, `link-color`, `text-truncate`, `text-break`), **superficies** (`bg`, `text-bg`, `border`, `border-color`, `radius`, `shadow`), **helpers** (`focus-ring`, `focus-ring-color`, `visually-hidden`, `stretched-link`, `ratio`, `clearfix`) y los **puentes** (`bridge-bootstrap` / `bridge-material` / `bridge-tailwind` / `bridge-open-props`).
@@ -331,12 +342,12 @@ $hub-accents: (
 	primary: var(--hub-ref-color-blue-500, #0d6efd),
 	secondary: var(--hub-ref-color-gray-600, #6c757d),
 	success: var(--hub-ref-color-green-500, #198754),
-	danger:  var(--hub-ref-color-red-500, #dc3545),
+	danger: var(--hub-ref-color-red-500, #dc3545),
 	warning: var(--hub-ref-color-yellow-500, #ffc107),
-	info:    var(--hub-ref-color-cyan-500, #0dcaf0),
+	info: var(--hub-ref-color-cyan-500, #0dcaf0),
 	neutral: var(--hub-ref-color-gray-600, #6c757d),
-	light:   var(--hub-ref-color-gray-100, #f8f9fa),
-	dark:    var(--hub-ref-color-gray-900, #212529)
+	light: var(--hub-ref-color-gray-100, #f8f9fa),
+	dark: var(--hub-ref-color-gray-900, #212529)
 ) !default;
 
 // Override aditivo — pasa SOLO las variantes que añades o retocas, conserva las demás.
@@ -356,12 +367,29 @@ $hub-accents: map.merge($hub-accents, $hub-accents-extra);
 // obtiene su familia completa gratis.
 @mixin hub-color-derive() {
 	@each $name in map.keys($hub-accents) {
-		--hub-sys-color-#{$name}-subtle:        color-mix(in oklch, var(--hub-sys-color-#{$name}) 12%, var(--hub-sys-surface-page, #fff));
-		--hub-sys-color-#{$name}-border-subtle: color-mix(in oklch, var(--hub-sys-color-#{$name}) 35%, var(--hub-sys-surface-page, #fff));
-		--hub-sys-color-#{$name}-emphasis:      color-mix(in oklch, var(--hub-sys-color-#{$name}) 80%, var(--hub-sys-color-ink, #212529));
+		--hub-sys-color-#{$name}-subtle: color-mix(
+			in oklch,
+			var(--hub-sys-color-#{$name}) 12%,
+			var(--hub-sys-surface-page, #fff)
+		);
+		--hub-sys-color-#{$name}-border-subtle: color-mix(
+			in oklch,
+			var(--hub-sys-color-#{$name}) 35%,
+			var(--hub-sys-surface-page, #fff)
+		);
+		// La luminosidad se lleva a la ventana que fija el tema — 0…0,45 en un tema claro,
+		// 0,72…1 en uno oscuro — para que el texto de énfasis siga leyéndose vaya la
+		// superficie hacia donde vaya. Una mezcla por porcentaje no puede: nunca oscurece
+		// un tono pálido.
+		--hub-sys-color-#{$name}-emphasis: oklch(
+			from var(--hub-sys-color-#{$name})
+				clamp(var(--hub-sys-emphasis-lightness-min, 0), l, var(--hub-sys-emphasis-lightness-max, 1))
+				c
+				h
+		);
 		// Volteo de contraste en escala de grises según la luminosidad del propio acento:
 		// los acentos oscuros (L < .62) resuelven a texto blanco; los claros, a casi negro.
-		--hub-sys-color-#{$name}-on:            oklch(from var(--hub-sys-color-#{$name}) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+		--hub-sys-color-#{$name}-on: oklch(from var(--hub-sys-color-#{$name}) clamp(0, (0.62 - l) * 1000, 1) 0 h);
 	}
 }
 
@@ -378,18 +406,41 @@ $hub-accents: map.merge($hub-accents, $hub-accents-extra);
 > `-emphasis` / `-on` automáticamente. Los mapas + mixins son solo la mecánica
 > interna, útil si contribuyes al paquete o compilas tu propia variante de la paleta.
 
+### Escribir un tema oscuro propio
+
+Fija la ventana de énfasis junto con las superficies, o cada acento se irá hacia el lado
+equivocado:
+
+```css
+[data-theme='midnight'] {
+	--hub-sys-surface-page: #0b0d10;
+	--hub-sys-surface-elevated: #14181d;
+	--hub-sys-text-primary: #eef1f5;
+	--hub-sys-color-ink: #eef1f5;
+	/* Sin estas dos, `-emphasis` oscurece en vez de aclarar y un botón ghost sobre
+	   esta superficie se queda alrededor de 2:1. */
+	--hub-sys-emphasis-lightness-min: 0.72;
+	--hub-sys-emphasis-lightness-max: 1;
+}
+```
+
+Los enlaces, el halo de foco y `--hub-sys-border-color-strong` salen de ahí, así que no hay nada
+más que declarar. Comprueba el resultado con `npm run check:contrast`, que mide cada acento,
+enlace, halo y borde de control de la hoja compilada contra las dos superficies de cada tema que
+encuentra, y falla si alguno baja de su umbral WCAG.
+
 ---
 
 ## 📋 Tabla de referencia rápida
 
-| Quiero…                    | Cómo                                                        |
-| -------------------------- | ----------------------------------------------------------- |
-| Usar la paleta             | `@import '…/hub-tokens.css'` una vez                        |
-| Cambiar un color global    | `:root { --hub-sys-color-primary: … }`                      |
-| Cambiar el modo oscuro     | `[data-theme='dark'] { --hub-sys-… : … }`                   |
-| Añadir un acento propio    | define `--hub-sys-color-<x>` (+ familia opcional)           |
-| Crear un tema              | `[data-theme='<nombre>'] { … }` y actívalo                  |
-| Ver todos los tokens       | la página de tokens en [hubui.dev](https://hubui.dev/en/design-system/) |
+| Quiero…                 | Cómo                                                                    |
+| ----------------------- | ----------------------------------------------------------------------- |
+| Usar la paleta          | `@import '…/hub-tokens.css'` una vez                                    |
+| Cambiar un color global | `:root { --hub-sys-color-primary: … }`                                  |
+| Cambiar el modo oscuro  | `[data-theme='dark'] { --hub-sys-… : … }`                               |
+| Añadir un acento propio | define `--hub-sys-color-<x>` (+ familia opcional)                       |
+| Crear un tema           | `[data-theme='<nombre>'] { … }` y actívalo                              |
+| Ver todos los tokens    | la página de tokens en [hubui.dev](https://hubui.dev/en/design-system/) |
 
 ---
 

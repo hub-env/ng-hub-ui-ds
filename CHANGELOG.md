@@ -5,6 +5,65 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.12.0] - 2026-09-23
+
+### Fixed
+
+- **The `-emphasis` role is readable on a dark surface again.** Its lightness was capped at
+  `min(l, 0.45)`, a rule written for ink on paper, so on the dark theme it pushed every accent
+  down instead of up. The five accents `[data-theme='dark']` re-tints hid the damage; the four it
+  does not — `secondary`, `neutral`, `light`, `dark` — showed it. Measured over
+  `--hub-sys-surface-elevated` (`#1e1e1e`): `neutral-emphasis` 2.25:1 → **6.74:1**,
+  `secondary-emphasis` 2.25:1 → **6.74:1**, `light-emphasis` 2.24:1 → **7.06:1** (via `#f8f9fa`),
+  `dark-emphasis` 1.08:1 → **6.73:1**. The five re-tinted accents were failing too —
+  `primary-emphasis` 2.21:1, `danger-emphasis` 2.10:1, `info-emphasis` 2.32:1 — and now read
+  6.90:1, 6.59:1 and 10.76:1. The `terminal` theme had the same nine failures, floor 2.26:1, and
+  now bottoms out at 6.89:1. Nothing changes on the light themes: their emphasis values are
+  byte-identical.
+- **The focus ring is an indicator rather than a wash.** `rgba(13, 110, 253, 0.25)` composited
+  over the page at 1.41:1 where WCAG 1.4.11 asks 3:1, and the per-theme overrides were worse —
+  `sunset` 1.28:1, `mono` 1.41:1, `terminal` 2.89:1, `dark` 1.97:1. The ring is now the opaque
+  `--hub-sys-color-primary-emphasis` and measures 6.35:1 at its worst across the seven built-ins
+  (`forest`), 14.05:1 at its best (`mono`). Width drops from `0.25rem` to `0.125rem` so an opaque
+  ring does not read as a slab; 2px is the thickness WCAG 2.2 treats as the floor.
+- **Links clear 4.5:1 on both surfaces of every theme.** `--hub-sys-link-color` was the raw
+  primary — 4.50:1 on `#ffffff` but **4.27:1** on `#f8f9fa`, so a link inside a card failed — and
+  `--hub-sys-link-hover-color` was a hard-coded `#0a58ca`, a blue that meant nothing in an orange
+  or a green theme. Both derive now: the link from `--hub-sys-color-primary-emphasis`, the hover
+  by walking that colour toward `--hub-sys-color-ink`, which darkens on a light theme and lightens
+  on a dark one. Worst link in the package is now 6.35:1 (`forest`), worst hover 7.47:1. The
+  `sunset` literal that cleared the bar by two hundredths (4.52:1) is gone with them.
+- **`.focus-ring-{variant}` re-tints the ring opaquely.** The `focus-ring-color()` mixin mixed the
+  accent to 25% alpha, which put every one of those utilities near 1.3:1. It now reads the
+  variant's `-emphasis` role.
+
+### Added
+
+- **`--hub-sys-border-color-strong`** — the boundary of an interactive control, which 1.4.11 wants
+  at 3:1. `--hub-sys-border-color-default` is the decorative hairline and measures 1.30:1 on white,
+  so a control drawn with it has no visible edge. Derived from the theme's own ink and surface, so
+  it needs no per-theme literal: 5.21:1 on the light themes, 3.42:1 at its tightest (`sunset`).
+- **`--hub-sys-emphasis-lightness-min` / `--hub-sys-emphasis-lightness-max`** — the lightness
+  window the `-emphasis` role is steered into, `0`/`0.45` on a light theme and `0.72`/`1` on
+  `dark` and `terminal`. A custom dark theme sets these two and every accent in the open map,
+  including ones the consumer added, comes out readable.
+- **`npm run check:contrast`** (`scripts/check-contrast.mjs`) — measures every accent, link, focus
+  ring and control border of the compiled sheet against both surfaces of every theme it finds, and
+  exits non-zero if a shipped default drops under its threshold. Themes and accents are discovered
+  from the CSS, so a new one is covered without touching the script. It runs on `prepublishOnly`.
+
+### Changed
+
+- The `bootstrap`, `dark`, `sunset`, `forest` and `mono` themes no longer carry their own
+  `--hub-sys-link-color` / `--hub-sys-link-hover-color`, and none of the six themes carries its own
+  `--hub-sys-focus-ring-color`. What derives in their place is the same colour or a better one —
+  for `dark` it resolves to the very `#6ea8fe` the block used to spell out. `terminal` keeps its
+  cyan links, which are deliberate and measure 11.75:1.
+
+### Removed
+
+- `--hub-focus-ring-opacity`. It existed to thin the ring, which is the defect.
+
 ## [22.11.5] - 2026-09-20
 
 ### Changed
@@ -64,14 +123,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   inherited unreadable text through `.text-warning-emphasis` and through any component
   reading the role, and none of them could fix it, because the formula lives here.
 
-  The luminosity is capped instead of mixed — `oklch(from <accent> min(l, .45) c h)` —
-  which leaves an already-dark accent exactly where it was and pulls a light one down to
-  where it can carry a letter, keeping its hue and its chroma. Measured on white across the
-  nine defaults: nothing below 6.6:1 — info is the floor at 6.62, success next at 6.91 —
-  and no role moves by more than a point unless it was failing. `dark` is untouched, since
-  it already sat at L .26.
+    The luminosity is capped instead of mixed — `oklch(from <accent> min(l, .45) c h)` —
+    which leaves an already-dark accent exactly where it was and pulls a light one down to
+    where it can carry a letter, keeping its hue and its chroma. Measured on white across the
+    nine defaults: nothing below 6.6:1 — info is the floor at 6.62, success next at 6.91 —
+    and no role moves by more than a point unless it was failing. `dark` is untouched, since
+    it already sat at L .26.
 
-  Themes that assign `--hub-sys-color-*-emphasis` by hand are unaffected.
+    Themes that assign `--hub-sys-color-*-emphasis` by hand are unaffected.
+
 ## [22.10.0] - 2026-09-08
 
 ### Added

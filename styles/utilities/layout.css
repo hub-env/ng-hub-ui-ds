@@ -1214,75 +1214,39 @@
 /* `.focus-ring-*` only re-tints the ring token — pair it with `.focus-ring`
    (or any component that already draws one) to see the colour change. */
 .focus-ring-primary {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-primary) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-primary-emphasis);
 }
 
 .focus-ring-secondary {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-secondary) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-secondary-emphasis);
 }
 
 .focus-ring-success {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-success) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-success-emphasis);
 }
 
 .focus-ring-danger {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-danger) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-danger-emphasis);
 }
 
 .focus-ring-warning {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-warning) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-warning-emphasis);
 }
 
 .focus-ring-info {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-info) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-info-emphasis);
 }
 
 .focus-ring-neutral {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-neutral) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-neutral-emphasis);
 }
 
 .focus-ring-light {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-light) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-light-emphasis);
 }
 
 .focus-ring-dark {
-  --hub-sys-focus-ring-color: color-mix(
-  	in srgb,
-  	var(--hub-sys-color-dark) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-  	transparent
-  );
+  --hub-sys-focus-ring-color: var(--hub-sys-color-dark-emphasis);
 }
 
 .visually-hidden,

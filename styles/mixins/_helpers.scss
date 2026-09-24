@@ -64,11 +64,13 @@
 /// Re-tints the ring colour token from an accent of the open map, leaving the
 /// geometry to `focus-ring()`. Set it on the element, not on its focus state —
 /// it declares a variable, it does not paint.
+///
+/// It reads the accent's `-emphasis` role rather than the accent itself: that is
+/// the role steered to stay legible against the theme's surface, which is exactly
+/// what 1.4.11 asks of a focus indicator. The 25% alpha this used to mix took
+/// every ring down to roughly 1.3:1 — under `.focus-ring-warning` it was all but
+/// gone.
 /// @param {String} $variant  Accent name of the open map.
 @mixin focus-ring-color($variant: primary) {
-	--hub-sys-focus-ring-color: color-mix(
-		in srgb,
-		var(--hub-sys-color-#{$variant}) calc(var(--hub-focus-ring-opacity, 0.25) * 100%),
-		transparent
-	);
+	--hub-sys-focus-ring-color: var(--hub-sys-color-#{$variant}-emphasis);
 }

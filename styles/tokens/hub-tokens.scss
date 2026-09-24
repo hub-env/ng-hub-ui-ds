@@ -403,7 +403,7 @@ $hub-accents-terminal: (
 			var(--hub-sys-surface-page, #fff)
 		);
 		/**
-		 * The emphasis role is what text is painted with, so its luminosity is capped
+		 * The emphasis role is what text is painted with, so its luminosity is steered
 		 * rather than mixed.
 		 *
 		 * This used to be `color-mix(accent 80%, ink)`, and a percentage cannot darken a
@@ -412,14 +412,24 @@ $hub-accents-terminal: (
 		 * or a warning outline button inherited unreadable text — and no theme could fix
 		 * it, because the formula lives here.
 		 *
-		 * `min(l, 0.45)` leaves an already-dark accent exactly where it was and pulls a
-		 * light one down to where it can carry a letter, keeping hue and chroma. Measured
-		 * on white across the nine defaults: nothing below 6.6:1 — info is the floor at
-		 * 6.62, success next at 6.91 — and no role moves by more than a point unless it
-		 * was failing. `dark` is untouched, since it already sat at L .26.
+		 * Its replacement, `min(l, 0.45)`, was written for ink on paper and does the exact
+		 * opposite of what a dark surface needs: it pushed every accent DOWN, so a ghost
+		 * `neutral` button on the dark theme's elevated surface measured 2.25:1 and its
+		 * `dark` sibling 1.08:1 — invisible. The five accents the dark theme re-tints hid
+		 * the hole, because their base colour is already light; the four it does not
+		 * re-tint (secondary, neutral, light, dark) showed it.
+		 *
+		 * So the cap became a window the theme owns. A light theme keeps the ceiling and
+		 * no floor; a dark theme keeps the floor and no ceiling, and the same formula
+		 * serves both — including any accent a consumer adds to the open map, which is
+		 * what a hard-coded per-theme colour could never do. Hue and chroma are untouched
+		 * either way.
 		 */
 		--hub-sys-color-#{$name}-emphasis: oklch(
-			from var(--hub-sys-color-#{$name}) min(l, 0.45) c h
+			from var(--hub-sys-color-#{$name})
+				clamp(var(--hub-sys-emphasis-lightness-min, 0), l, var(--hub-sys-emphasis-lightness-max, 1))
+				c
+				h
 		);
 		// Contrast / on-color: a grayscale flip driven by the accent's own lightness.
 		// Dark accents (L < .62) resolve to white text; light accents to near-black.
@@ -438,6 +448,12 @@ $hub-accents-terminal: (
 	/* ----------------------------------------------------------
      Brand / action colors
   ---------------------------------------------------------- */
+	/* The lightness window the `-emphasis` role is steered into. A light theme caps
+	   how light emphasis text may get; a dark theme sets the floor instead (see the
+	   dark and terminal blocks). At 0.45 the nine default accents all clear 4.5:1 on
+	   both light surfaces — green is the tightest, 7.04:1 on #fff, 6.68:1 on #f8f9fa. */
+	--hub-sys-emphasis-lightness-min: 0;
+	--hub-sys-emphasis-lightness-max: 0.45;
 	@include hub-color-accents($hub-accents);
 	@include hub-color-derive();
 	--hub-sys-color-ink: var(--hub-ref-color-gray-900, #212529);
@@ -484,14 +500,33 @@ $hub-accents-terminal: (
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
 	--hub-sys-text-muted: var(--hub-ref-color-gray-600, #6c757d);
 	--hub-sys-color-text-subtle: var(--hub-sys-text-muted, #6c757d);
-	--hub-sys-link-color: var(--hub-sys-color-primary, #0d6efd);
-	--hub-sys-link-hover-color: var(--hub-ref-color-blue-600, #0a58ca);
+	/* A link is body text, so it answers to 4.5:1, and the raw accent does not get
+	   there: #0d6efd measures 4.50:1 on #fff but 4.27:1 on the elevated surface, and
+	   `secondary`/`warning`-keyed themes are worse. The emphasis role is the one
+	   already steered to be readable on the theme's own surface, so links read it.
+	   Hover then walks that colour toward the theme's ink — away from the surface in
+	   both directions — which is what the old hard-coded #0a58ca could only do for a
+	   blue theme. */
+	--hub-sys-link-color: var(--hub-sys-color-primary-emphasis, #0a58ca);
+	--hub-sys-link-hover-color: color-mix(in oklch, var(--hub-sys-link-color) 80%, var(--hub-sys-color-ink, #212529));
 
 	/* ----------------------------------------------------------
      Borders
   ---------------------------------------------------------- */
 	--hub-sys-border-color-default: var(--hub-ref-color-gray-300, #dee2e6);
 	--hub-sys-color-border-subtle: var(--hub-sys-border-color-default, #dee2e6);
+	/* The hairline above is decorative — it separates a card from the page and WCAG
+	   asks nothing of it. The boundary of an INTERACTIVE control is a different
+	   thing: 1.4.11 wants 3:1, and #dee2e6 on white gives 1.30:1, so an input drawn
+	   with the decorative line has no visible edge. This is the one to reach for
+	   there. Mixed from the theme's own ink so it re-derives per theme instead of
+	   needing a literal in each block; 65% clears 3:1 on both surfaces of all seven
+	   built-ins, with sunset the tightest at 3.42:1. */
+	--hub-sys-border-color-strong: color-mix(
+		in oklch,
+		var(--hub-sys-text-primary, #212529) 65%,
+		var(--hub-sys-surface-page, #fff)
+	);
 
 	/* ----------------------------------------------------------
      Shadows
@@ -548,8 +583,15 @@ $hub-accents-terminal: (
 	/* ----------------------------------------------------------
      Focus ring
   ---------------------------------------------------------- */
-	--hub-sys-focus-ring-width: 0.25rem;
-	--hub-sys-focus-ring-color: rgba(13, 110, 253, 0.25);
+	/* A 25%-alpha ring is a wash, not an indicator: composited over the page it
+	   measured 1.41:1, and 1.28:1 on sunset, where 1.4.11 asks for 3:1. Opaque fixes
+	   that, but 0.25rem of solid accent reads as a slab, so the ring narrows to the
+	   2px that WCAG 2.2 takes as the minimum thickness and is where most of the
+	   field has settled. The colour is the emphasis role again — contrast against
+	   the theme's own surface is precisely the property it guarantees — so no theme
+	   has to carry a ring colour of its own any more. */
+	--hub-sys-focus-ring-width: 0.125rem;
+	--hub-sys-focus-ring-color: var(--hub-sys-color-primary-emphasis, #0a58ca);
 	--hub-sys-focus-ring-offset: 2px;
 
 	/* ----------------------------------------------------------
@@ -657,13 +699,15 @@ $hub-accents-terminal: (
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
 	--hub-sys-text-muted: #6c757d;
-	--hub-sys-link-color: #0d6efd;
-	--hub-sys-link-hover-color: #0a58ca;
+	/* Links and the focus ring are derived from this theme's own primary now. The
+	   literals that used to sit here were the failing pair: #0d6efd reads 4.27:1 on
+	   the elevated surface and the ring washed out at 1.41:1. What derives in their
+	   place is #0049c1, which is the darker blue Bootstrap itself uses for a visited
+	   or hovered link, so the look survives the fix. */
 	--hub-sys-border-color-default: #dee2e6;
 	--hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 	--hub-sys-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 	--hub-sys-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-	--hub-sys-focus-ring-color: rgba(13, 110, 253, 0.25);
 	--hub-sys-state-hover-bg: rgba(0, 0, 0, 0.075);
 	--hub-sys-state-active-bg: rgba(0, 0, 0, 0.1);
 	--hub-sys-state-striped-bg: rgba(0, 0, 0, 0.05);
@@ -682,8 +726,14 @@ $hub-accents-terminal: (
 [data-theme='dark'] {
 	/* ----------------------------------------------------------
      Brand / action colors — dark variants
-     Light ink flips -emphasis toward white on dark surfaces.
   ---------------------------------------------------------- */
+	/* The map below re-tints five accents; secondary, neutral, light and dark keep
+	   the light theme's greys, which is legitimate — a grey is a grey. What was not
+	   legitimate was reading them through a cap built for white paper. Turning the
+	   cap into a floor lifts exactly those four and leaves the five re-tinted ones
+	   byte-identical, since all five already sit above L .72. */
+	--hub-sys-emphasis-lightness-min: 0.72;
+	--hub-sys-emphasis-lightness-max: 1;
 	@include hub-color-accents($hub-accents-dark);
 	--hub-sys-color-ink: var(--hub-ref-color-gray-100, #f8f9fa);
 
@@ -710,8 +760,8 @@ $hub-accents-terminal: (
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
 	--hub-sys-text-muted: var(--hub-ref-color-gray-500, #adb5bd);
-	--hub-sys-link-color: var(--hub-ref-color-blue-300, #6ea8fe);
-	--hub-sys-link-hover-color: var(--hub-ref-color-blue-200, #9ec5fe);
+	/* No link pair here any more: the derived one resolves to #6ea8fe, the same
+	   blue-300 this block used to spell out. */
 
 	/* ----------------------------------------------------------
      Borders
@@ -725,11 +775,6 @@ $hub-accents-terminal: (
 	--hub-sys-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
 	--hub-sys-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.3);
 	--hub-sys-shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-
-	/* ----------------------------------------------------------
-     Focus ring
-  ---------------------------------------------------------- */
-	--hub-sys-focus-ring-color: rgba(110, 168, 254, 0.35);
 
 	/* ----------------------------------------------------------
      Interactive state overlays — lighter on dark
@@ -757,13 +802,13 @@ $hub-accents-terminal: (
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
 	--hub-sys-text-muted: #9a3412;
-	--hub-sys-link-color: #c2410c;
-	--hub-sys-link-hover-color: #9a3412;
+	/* The hand-picked #c2410c cleared 4.5:1 by two hundredths on the elevated
+	   surface — true today, and false the moment a browser rounds differently. The
+	   derived #942e00 sits at 6.93:1. */
 	--hub-sys-border-color-default: #fdba74;
 	--hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(124, 45, 18, 0.16);
 	--hub-sys-shadow: 0 0.5rem 1rem rgba(124, 45, 18, 0.18);
 	--hub-sys-shadow-lg: 0 1rem 3rem rgba(124, 45, 18, 0.24);
-	--hub-sys-focus-ring-color: rgba(234, 88, 12, 0.22);
 	--hub-sys-state-hover-bg: rgba(251, 146, 60, 0.18);
 	--hub-sys-state-active-bg: rgba(251, 146, 60, 0.25);
 	--hub-sys-state-striped-bg: rgba(251, 146, 60, 0.12);
@@ -792,13 +837,10 @@ $hub-accents-terminal: (
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
 	--hub-sys-text-muted: #3f6212;
-	--hub-sys-link-color: #166534;
-	--hub-sys-link-hover-color: #14532d;
 	--hub-sys-border-color-default: #86efac;
 	--hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(20, 83, 45, 0.16);
 	--hub-sys-shadow: 0 0.5rem 1rem rgba(20, 83, 45, 0.18);
 	--hub-sys-shadow-lg: 0 1rem 3rem rgba(20, 83, 45, 0.24);
-	--hub-sys-focus-ring-color: rgba(21, 128, 61, 0.22);
 	--hub-sys-state-hover-bg: rgba(22, 163, 74, 0.15);
 	--hub-sys-state-active-bg: rgba(22, 163, 74, 0.22);
 	--hub-sys-state-striped-bg: rgba(22, 163, 74, 0.1);
@@ -827,13 +869,10 @@ $hub-accents-terminal: (
 	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
 	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
 	--hub-sys-text-muted: #4b5563;
-	--hub-sys-link-color: #1f2937;
-	--hub-sys-link-hover-color: #111827;
 	--hub-sys-border-color-default: #d1d5db;
 	--hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(17, 24, 39, 0.1);
 	--hub-sys-shadow: 0 0.5rem 1rem rgba(17, 24, 39, 0.12);
 	--hub-sys-shadow-lg: 0 1rem 3rem rgba(17, 24, 39, 0.16);
-	--hub-sys-focus-ring-color: rgba(31, 41, 55, 0.18);
 	--hub-sys-state-hover-bg: rgba(17, 24, 39, 0.08);
 	--hub-sys-state-active-bg: rgba(17, 24, 39, 0.14);
 	--hub-sys-state-striped-bg: rgba(17, 24, 39, 0.05);
@@ -874,6 +913,9 @@ $hub-accents-terminal: (
 	/* ----------------------------------------------------------
      Brand / action colors — phosphor green + amber/cyan/red
   ---------------------------------------------------------- */
+	/* Near-black surfaces, so the emphasis window flips the same way dark's does. */
+	--hub-sys-emphasis-lightness-min: 0.72;
+	--hub-sys-emphasis-lightness-max: 1;
 	@include hub-color-accents($hub-accents-terminal);
 	--hub-sys-color-ink: #d8ffe4;
 	--hub-sys-color-secondary: #2f9d56;
@@ -911,11 +953,6 @@ $hub-accents-terminal: (
 	--hub-sys-shadow: 0 0 1rem rgba(74, 240, 122, 0.16);
 	--hub-sys-shadow-lg: 0 0 2rem rgba(74, 240, 122, 0.22);
 	--hub-sys-shadow-inset: inset 0 0 0.5rem rgba(0, 0, 0, 0.6);
-
-	/* ----------------------------------------------------------
-     Focus ring
-  ---------------------------------------------------------- */
-	--hub-sys-focus-ring-color: rgba(74, 240, 122, 0.4);
 
 	/* ----------------------------------------------------------
      Interactive state overlays
