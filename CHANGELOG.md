@@ -5,6 +5,20 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.13.1] - 2026-09-28
+
+### Added
+
+- **The variable catalogue covers the spreadsheet.** The sheet's tokens are registered in
+  `docs/variables-css-library.en.md` and listed under their own heading, the two the new `fx`
+  mark reads — `--hub-spreadsheet-formula-bg` and `--hub-spreadsheet-formula-color` — among
+  them, and `ng-hub-ui-spreadsheet` joins the family list of both READMEs.
+
+### Changed
+
+- **Every spreadsheet entry points at its source line again.** The sheet's stylesheet grew
+  while these tokens were added, so the catalogue references were re-read and rewritten.
+
 ## [22.13.0] - 2026-09-24
 
 ### Fixed
