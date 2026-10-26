@@ -91,13 +91,13 @@ $_heading-scale: (
 @mixin text-color($variant: body) {
 	$color: var(--hub-sys-color-#{$variant});
 	@if $variant == body {
-		$color: var(--hub-sys-text-primary);
+		$color: var(--hub-sys-text-body);
 	} @else if $variant == body-emphasis {
-		$color: var(--hub-sys-text-emphasis, var(--hub-sys-text-primary));
+		$color: var(--hub-sys-text-emphasis, var(--hub-sys-text-body));
 	} @else if $variant == body-secondary {
-		$color: var(--hub-sys-text-secondary, var(--hub-sys-text-muted));
+		$color: var(--hub-sys-text-body-secondary, var(--hub-sys-text-muted));
 	} @else if $variant == body-tertiary {
-		$color: var(--hub-sys-text-tertiary, var(--hub-sys-text-muted));
+		$color: var(--hub-sys-text-body-tertiary, var(--hub-sys-text-muted));
 	} @else if $variant == muted {
 		$color: var(--hub-sys-text-muted);
 	}

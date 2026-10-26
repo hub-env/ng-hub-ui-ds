@@ -1,4 +1,3 @@
-@use 'sass:list';
 @use 'sass:map';
 
 /**
@@ -219,7 +218,7 @@ $hub-gap-steps: (0, 1, 2, 3, 4, 5) !default;
 	--hub-container-font-size: var(--hub-ref-font-size-base);
 	--hub-container-font-weight: var(--hub-ref-font-weight-base);
 	--hub-container-font-style: normal;
-	--hub-container-text-color: var(--hub-sys-text-primary);
+	--hub-container-text-color: var(--hub-sys-text-body);
 	--hub-container-text-align: start;
 	--hub-container-text-decoration: none;
 	--hub-container-text-transform: none;
@@ -318,10 +317,6 @@ $hub-accents: (
 	dark: var(--hub-ref-color-gray-900, #212529)
 ) !default;
 
-// Accent names whose `--hub-sys-text-<name>` is the ink of ordinary text, so no accent text variable is generated
-// for them: `primary` and `secondary` until the major that frees them, and `tertiary` because a product may add a
-// `tertiary` accent while `--hub-sys-text-tertiary` is the lightest step of the ink.
-$hub-text-ink-names: primary, secondary, tertiary;
 
 // Additive override: pass ONLY the variants you add or retune, keeping the defaults.
 // Prefer this over replacing `$hub-accents` wholesale:
@@ -442,19 +437,12 @@ $hub-accents-terminal: (
 		// Dark accents (L < .62) resolve to white text; light accents to near-black.
 		// Uses relative color syntax so it recomputes with the accent, no second token.
 		--hub-sys-color-#{$name}-on: oklch(from var(--hub-sys-color-#{$name}) clamp(0, (0.62 - l) * 1000, 1) 0 h);
-		// Accent text as a system variable: `--hub-sys-text-danger`, `--hub-sys-text-success`… It is the accent's
-		// emphasis, the version steered for text, so it passes the text contrast guard on every theme where the raw
-		// accent (amber, cyan, light) does not. `primary`, `secondary` and `tertiary` are skipped while those names still
-		// mean the ink of ordinary text; the ink has moved to `--hub-sys-text-body*` below so they can be freed in a major.
-		@if not list.index($hub-text-ink-names, $name) {
-			--hub-sys-text-#{$name}: var(--hub-sys-color-#{$name}-emphasis);
-		}
+		// Accent text as a system variable, for every accent of the open map: `--hub-sys-text-primary`,
+		// `--hub-sys-text-danger`… It is the accent's emphasis, the version steered for text, so it passes the text
+		// contrast guard on every theme where the raw accent (amber, cyan, light) does not. The ink of ordinary text is
+		// `--hub-sys-text-body*`, which no accent can take.
+		--hub-sys-text-#{$name}: var(--hub-sys-color-#{$name}-emphasis);
 	}
-	// The ink of ordinary text under names that do not collide with any accent. Today they follow the
-	// `--hub-sys-text-primary/-secondary/-tertiary` every theme sets; libraries move to these first.
-	--hub-sys-text-body: var(--hub-sys-text-primary);
-	--hub-sys-text-body-secondary: var(--hub-sys-text-secondary);
-	--hub-sys-text-body-tertiary: var(--hub-sys-text-tertiary);
 }
 
 /* ============================================================
@@ -510,12 +498,12 @@ $hub-accents-terminal: (
 	/* ----------------------------------------------------------
      Text
   ---------------------------------------------------------- */
-	--hub-sys-text-primary: var(--hub-ref-color-gray-900, #212529);
+	--hub-sys-text-body: var(--hub-ref-color-gray-900, #212529);
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	/* Muted is body text, so it answers to 4.5:1 — and the ref ramp's `gray-600`
 	   (#6c757d) does not get there: 4.69:1 on the page but 4.44:1 on the elevated
 	   surface, which is the one a card, a table head or an input sits on. #6a737b is
@@ -549,7 +537,7 @@ $hub-accents-terminal: (
 	   built-ins, with sunset the tightest at 3.42:1. */
 	--hub-sys-border-color-strong: color-mix(
 		in oklch,
-		var(--hub-sys-text-primary, #212529) 65%,
+		var(--hub-sys-text-body, #212529) 65%,
 		var(--hub-sys-surface-page, #fff)
 	);
 
@@ -698,12 +686,12 @@ $hub-accents-terminal: (
 	@include hub-color-accents($hub-accents);
 	--hub-sys-surface-page: var(--hub-ref-surface-1, #ffffff);
 	--hub-sys-surface-elevated: var(--hub-ref-surface-2, #f8f9fa);
-	--hub-sys-text-primary: var(--hub-ref-color-gray-900, #212529);
+	--hub-sys-text-body: var(--hub-ref-color-gray-900, #212529);
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	/* Literal, not `gray-600`: that grey reads 4.44:1 on the elevated surface. */
 	--hub-sys-text-muted: #6a737b;
 	--hub-sys-border-color-default: var(--hub-ref-color-gray-300, #dee2e6);
@@ -725,12 +713,12 @@ $hub-accents-terminal: (
 	--hub-sys-color-dark: #212529;
 	--hub-sys-surface-page: #ffffff;
 	--hub-sys-surface-elevated: #f8f9fa;
-	--hub-sys-text-primary: #212529;
+	--hub-sys-text-body: #212529;
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	/* Bootstrap's own `$gray-600` is #6c757d, and it fails the same way here as it
 	   does there: 4.44:1 on the elevated surface. The look survives one step of
 	   darkening, the reading does not survive leaving it. */
@@ -789,12 +777,12 @@ $hub-accents-terminal: (
 	/* ----------------------------------------------------------
      Text
   ---------------------------------------------------------- */
-	--hub-sys-text-primary: var(--hub-ref-color-gray-100, #f8f9fa);
+	--hub-sys-text-body: var(--hub-ref-color-gray-100, #f8f9fa);
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	--hub-sys-text-muted: var(--hub-ref-color-gray-500, #adb5bd);
 	/* No link pair here any more: the derived one resolves to #6ea8fe, the same
 	   blue-300 this block used to spell out. */
@@ -831,12 +819,12 @@ $hub-accents-terminal: (
 	--hub-sys-color-dark: #431407;
 	--hub-sys-surface-page: #fff7ed;
 	--hub-sys-surface-elevated: #ffedd5;
-	--hub-sys-text-primary: #7c2d12;
+	--hub-sys-text-body: #7c2d12;
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	--hub-sys-text-muted: #9a3412;
 	/* The hand-picked #c2410c cleared 4.5:1 by two hundredths on the elevated
 	   surface — true today, and false the moment a browser rounds differently. The
@@ -866,12 +854,12 @@ $hub-accents-terminal: (
 	--hub-sys-color-dark: #052e16;
 	--hub-sys-surface-page: #f0fdf4;
 	--hub-sys-surface-elevated: #dcfce7;
-	--hub-sys-text-primary: #14532d;
+	--hub-sys-text-body: #14532d;
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	--hub-sys-text-muted: #3f6212;
 	--hub-sys-border-color-default: #86efac;
 	--hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(20, 83, 45, 0.16);
@@ -898,12 +886,12 @@ $hub-accents-terminal: (
 	--hub-sys-color-dark: #111827;
 	--hub-sys-surface-page: #f9fafb;
 	--hub-sys-surface-elevated: #f3f4f6;
-	--hub-sys-text-primary: #111827;
+	--hub-sys-text-body: #111827;
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	--hub-sys-text-muted: #4b5563;
 	--hub-sys-border-color-default: #d1d5db;
 	--hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(17, 24, 39, 0.1);
@@ -967,12 +955,12 @@ $hub-accents-terminal: (
 	/* ----------------------------------------------------------
      Text — green phosphor, cyan links
   ---------------------------------------------------------- */
-	--hub-sys-text-primary: #66f08f;
+	--hub-sys-text-body: #66f08f;
 	/* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
 	   re-theme without a per-theme value. `secondary` here is the TEXT role,
 	   not the `secondary` ACCENT (a blue in most themes). */
-	--hub-sys-text-secondary: color-mix(in srgb, var(--hub-sys-text-primary) 75%, transparent);
-	--hub-sys-text-tertiary: color-mix(in srgb, var(--hub-sys-text-primary) 50%, transparent);
+	--hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
+	--hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
 	--hub-sys-text-muted: #3f9e63;
 	--hub-sys-link-color: #56e1e6;
 	--hub-sys-link-hover-color: #8dffb0;

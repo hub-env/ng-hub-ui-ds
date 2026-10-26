@@ -27,7 +27,7 @@ body {
   font-size: var(--hub-ref-font-size-base);
   font-weight: var(--hub-ref-font-weight-base);
   line-height: var(--hub-ref-line-height-base);
-  color: var(--hub-sys-text-primary);
+  color: var(--hub-sys-text-body);
   background-color: var(--hub-sys-surface-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

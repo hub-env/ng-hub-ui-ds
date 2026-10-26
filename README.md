@@ -150,7 +150,7 @@ The tokens follow a layered system:
 | Layer            | Prefix                                                   | What it is                                                                                                                                                           | Examples                                                                           |
 | ---------------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **Reference**    | `--hub-ref-*`                                            | Raw, context-free values                                                                                                                                             | `--hub-ref-color-blue-500`, `--hub-ref-space-3`, `--hub-ref-radius-md`             |
-| **System**       | `--hub-sys-*`                                            | Meaningful assignments that components consume                                                                                                                       | `--hub-sys-color-primary`, `--hub-sys-surface-page`, `--hub-sys-text-primary`      |
+| **System**       | `--hub-sys-*`                                            | Meaningful assignments that components consume                                                                                                                       | `--hub-sys-color-primary`, `--hub-sys-surface-page`, `--hub-sys-text-body`      |
 | **Container**    | `--hub-container-*`                                      | Inheritable bridge from `sys` to concrete containers/slots — a **re-base hook**                                                                                      | `--hub-container-bg`, `--hub-container-padding-x`, `--hub-container-gap`           |
 | **Base / shell** | `--hub-body-*` · `--hub-main-*` · `--hub-main-wrapper-*` | Application-shell layout: the outer page wrapper, the content region and its centered wrapper. `--hub-body-*` **inherits the matching `--hub-container-*` defaults** | `--hub-body-padding-x`, `--hub-main-bg`, `--hub-main-wrapper-max-width` (`1200px`) |
 
@@ -323,7 +323,7 @@ Group your overrides under a theme attribute and activate it whenever you want:
 [data-theme='corporate'] {
 	--hub-sys-color-primary: #0033a0;
 	--hub-sys-surface-page: #fbfcff;
-	--hub-sys-text-primary: #0a1f44;
+	--hub-sys-text-body: #0a1f44;
 	/* …the rest of the tokens that differ from the base theme */
 }
 ```
@@ -423,7 +423,7 @@ Set the emphasis window along with the surfaces, or every accent gets pushed the
 [data-theme='midnight'] {
 	--hub-sys-surface-page: #0b0d10;
 	--hub-sys-surface-elevated: #14181d;
-	--hub-sys-text-primary: #eef1f5;
+	--hub-sys-text-body: #eef1f5;
 	--hub-sys-color-ink: #eef1f5;
 	/* Without these two, `-emphasis` darkens instead of lightening and a ghost
 	   button on this surface lands around 2:1. */

@@ -402,7 +402,7 @@ for (const theme of themes) {
 	for (const accent of accents) against(required, `--hub-sys-color-${accent}-emphasis`, 4.5, 'text on surface');
 	against(required, '--hub-sys-link-color', 4.5, 'text on surface');
 	against(required, '--hub-sys-link-hover-color', 4.5, 'text on surface');
-	against(required, '--hub-sys-text-primary', 4.5, 'text on surface');
+	against(required, '--hub-sys-text-body', 4.5, 'text on surface');
 
 	// 1.4.11 — non-text: the focus indicator and an interactive control's boundary.
 	against(required, '--hub-sys-focus-ring-color', 3, 'focus indicator');
@@ -410,9 +410,9 @@ for (const theme of themes) {
 
 	// Advisory: known-below-bar roles, watched so a regression is at least visible.
 	against(advisory, '--hub-sys-border-color-default', 3, 'decorative hairline');
-	against(advisory, '--hub-sys-text-secondary', 4.5, 'de-emphasis ramp');
+	against(advisory, '--hub-sys-text-body-secondary', 4.5, 'de-emphasis ramp');
 	against(advisory, '--hub-sys-text-muted', 4.5, 'de-emphasis ramp');
-	against(advisory, '--hub-sys-text-tertiary', 4.5, 'de-emphasis ramp');
+	against(advisory, '--hub-sys-text-body-tertiary', 4.5, 'de-emphasis ramp');
 	for (const accent of accents) {
 		against(advisory, `--hub-sys-color-${accent}`, 3, 'solid accent boundary');
 		const base = get(`--hub-sys-color-${accent}`);

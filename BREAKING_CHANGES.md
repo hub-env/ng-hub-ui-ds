@@ -2,6 +2,33 @@
 
 This document tracks all breaking changes in the `ng-hub-ui-ds` package.
 
+## v22.15.0
+
+### The ink of ordinary text is `--hub-sys-text-body*`; `--hub-sys-text-primary` and `-secondary` are accent text
+
+- **Change**: every theme now sets the ink of ordinary text as `--hub-sys-text-body`, with
+  `--hub-sys-text-body-secondary` and `--hub-sys-text-body-tertiary` as its 75% and 50% steps.
+  `--hub-sys-text-primary` and `--hub-sys-text-secondary` are no longer ink: like
+  `--hub-sys-text-danger` and the rest since 22.14, they are the text of the accent of the same
+  name, `var(--hub-sys-color-primary-emphasis)` and `var(--hub-sys-color-secondary-emphasis)`.
+  `--hub-sys-text-tertiary` is gone unless a product adds a `tertiary` accent, in which case it is
+  that accent's text.
+- **Impact**: anything of your own that paints ordinary text with `--hub-sys-text-primary` turns
+  the primary accent's colour the day you upgrade; with `-secondary`, the secondary accent's.
+  A theme or override that sets `--hub-sys-text-primary` (or passes `sys-text-primary` to
+  `hub.theme($tokens: …)`) no longer changes the ink. The `ng-hub-ui-*` libraries are unaffected
+  from the versions that require `ng-hub-ui-ds` 22.14: they already read `--hub-sys-text-body*`.
+- **Migration**: rename, in your own stylesheets and theme overrides:
+
+    | Before                     | After                           |
+    | -------------------------- | ------------------------------- |
+    | `--hub-sys-text-primary`   | `--hub-sys-text-body`           |
+    | `--hub-sys-text-secondary` | `--hub-sys-text-body-secondary` |
+    | `--hub-sys-text-tertiary`  | `--hub-sys-text-body-tertiary`  |
+
+    and `sys-text-primary` → `sys-text-body` (and so on) in `hub.theme($tokens: …)`. Keep
+    `--hub-sys-text-primary` only where you meant text in the primary colour.
+
 ## v22.13.0
 
 ### Muted text is a darker grey

@@ -5,6 +5,20 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.15.0] - 2026-10-26
+
+### Changed
+
+- **BREAKING: the ink of ordinary text is `--hub-sys-text-body*`.** Every theme sets
+  `--hub-sys-text-body` and derives `-body-secondary` and `-body-tertiary` from it; the bridges,
+  the reset, the typography mixin, the `.text-body*` utilities and both contrast checks read those
+  names. See BREAKING_CHANGES.md for the migration.
+- **BREAKING: `--hub-sys-text-primary` and `--hub-sys-text-secondary` are accent text.** The
+  accent text role now covers every accent of the open map, so they are
+  `var(--hub-sys-color-primary-emphasis)` and `var(--hub-sys-color-secondary-emphasis)`, like
+  `--hub-sys-text-danger`. The transitional `--hub-sys-text-body` aliases and the list of
+  excluded names are gone.
+
 ## [22.14.1] - 2026-10-26
 
 ### Fixed

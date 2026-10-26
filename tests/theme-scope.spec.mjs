@@ -25,7 +25,8 @@ const blocks = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, selectors, bod
 	props: [...body.matchAll(/(--[\w-]+)\s*:/g)].map(([, prop]) => prop)
 }));
 
-// The accents are the names that carry an `-emphasis`; their family is what `hub-color-derive()` emits.
+// The accents are the names that carry an `-emphasis`; their family, accent text included, is what
+// `hub-color-derive()` emits. The `--hub-sys-text-body*` ink is a theme input, declared by every theme itself.
 const accents = new Set(
 	blocks
 		.flatMap((b) => b.props)
@@ -33,7 +34,7 @@ const accents = new Set(
 		.filter(Boolean)
 );
 const DERIVED = new RegExp(
-	`^--hub-sys-(color-(${[...accents].join('|')})-(subtle|border-subtle|emphasis|on)|text-body[\\w-]*)$`
+	`^--hub-sys-(color-(${[...accents].join('|')})-(subtle|border-subtle|emphasis|on)|text-(${[...accents].join('|')}))$`
 );
 
 describe('derived roles follow a theme applied to a subtree', () => {

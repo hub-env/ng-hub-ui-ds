@@ -360,19 +360,19 @@
 /* The document de-emphasis ramp. Reach for these — not `.text-secondary`, which
    is the brand ACCENT — when you mean "quieter body text". */
 .text-body {
-  color: color-mix(in srgb, var(--hub-sys-text-primary) calc(var(--hub-text-opacity, 1) * 100%), transparent);
+  color: color-mix(in srgb, var(--hub-sys-text-body) calc(var(--hub-text-opacity, 1) * 100%), transparent);
 }
 
 .text-body-emphasis {
-  color: color-mix(in srgb, var(--hub-sys-text-emphasis, var(--hub-sys-text-primary)) calc(var(--hub-text-opacity, 1) * 100%), transparent);
+  color: color-mix(in srgb, var(--hub-sys-text-emphasis, var(--hub-sys-text-body)) calc(var(--hub-text-opacity, 1) * 100%), transparent);
 }
 
 .text-body-secondary {
-  color: color-mix(in srgb, var(--hub-sys-text-secondary, var(--hub-sys-text-muted)) calc(var(--hub-text-opacity, 1) * 100%), transparent);
+  color: color-mix(in srgb, var(--hub-sys-text-body-secondary, var(--hub-sys-text-muted)) calc(var(--hub-text-opacity, 1) * 100%), transparent);
 }
 
 .text-body-tertiary {
-  color: color-mix(in srgb, var(--hub-sys-text-tertiary, var(--hub-sys-text-muted)) calc(var(--hub-text-opacity, 1) * 100%), transparent);
+  color: color-mix(in srgb, var(--hub-sys-text-body-tertiary, var(--hub-sys-text-muted)) calc(var(--hub-text-opacity, 1) * 100%), transparent);
 }
 
 .text-muted {

@@ -149,7 +149,7 @@ Los tokens siguen un sistema por capas:
 | Capa             | Prefijo                                                  | Qué es                                                                                                                                                                                   | Ejemplos                                                                           |
 | ---------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **Referencia**   | `--hub-ref-*`                                            | Valores crudos, sin contexto                                                                                                                                                             | `--hub-ref-color-blue-500`, `--hub-ref-space-3`, `--hub-ref-radius-md`             |
-| **Sistema**      | `--hub-sys-*`                                            | Asignaciones con significado que consumen los componentes                                                                                                                                | `--hub-sys-color-primary`, `--hub-sys-surface-page`, `--hub-sys-text-primary`      |
+| **Sistema**      | `--hub-sys-*`                                            | Asignaciones con significado que consumen los componentes                                                                                                                                | `--hub-sys-color-primary`, `--hub-sys-surface-page`, `--hub-sys-text-body`      |
 | **Container**    | `--hub-container-*`                                      | Puente heredable de `sys` a contenedores/slots concretos — un **re-base hook**                                                                                                           | `--hub-container-bg`, `--hub-container-padding-x`, `--hub-container-gap`           |
 | **Base / shell** | `--hub-body-*` · `--hub-main-*` · `--hub-main-wrapper-*` | Layout del _application shell_: el wrapper exterior de la página, la región de contenido y su wrapper centrado. `--hub-body-*` **hereda los valores por defecto de `--hub-container-*`** | `--hub-body-padding-x`, `--hub-main-bg`, `--hub-main-wrapper-max-width` (`1200px`) |
 
@@ -321,7 +321,7 @@ Reúne tus overrides bajo un atributo de tema y actívalo cuando quieras:
 [data-theme='corporate'] {
 	--hub-sys-color-primary: #0033a0;
 	--hub-sys-surface-page: #fbfcff;
-	--hub-sys-text-primary: #0a1f44;
+	--hub-sys-text-body: #0a1f44;
 	/* …el resto de tokens que difieran del tema base */
 }
 ```
@@ -423,7 +423,7 @@ equivocado:
 [data-theme='midnight'] {
 	--hub-sys-surface-page: #0b0d10;
 	--hub-sys-surface-elevated: #14181d;
-	--hub-sys-text-primary: #eef1f5;
+	--hub-sys-text-body: #eef1f5;
 	--hub-sys-color-ink: #eef1f5;
 	/* Sin estas dos, `-emphasis` oscurece en vez de aclarar y un botón ghost sobre
 	   esta superficie se queda alrededor de 2:1. */

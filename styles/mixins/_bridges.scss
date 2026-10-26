@@ -57,12 +57,12 @@ $_bootstrap-colors: (
 		}
 		@if _adopts($mode) {
 			--hub-sys-surface-page: var(--bs-body-bg);
-			--hub-sys-text-primary: var(--bs-body-color);
+			--hub-sys-text-body: var(--bs-body-color);
 			--hub-sys-border-color-default: var(--bs-border-color);
 		}
 		@if _projects($mode) {
 			--bs-body-bg: var(--hub-sys-surface-page);
-			--bs-body-color: var(--hub-sys-text-primary);
+			--bs-body-color: var(--hub-sys-text-body);
 			--bs-border-color: var(--hub-sys-border-color-default);
 		}
 	}
@@ -133,12 +133,12 @@ $_material-roles: (
 	}
 	@if _adopts($mode) {
 		--hub-sys-surface-page: var(--mat-sys-surface);
-		--hub-sys-text-primary: var(--mat-sys-on-surface);
+		--hub-sys-text-body: var(--mat-sys-on-surface);
 		--hub-sys-border-color-default: var(--mat-sys-outline);
 	}
 	@if _projects($mode) {
 		--mat-sys-surface: var(--hub-sys-surface-page);
-		--mat-sys-on-surface: var(--hub-sys-text-primary);
+		--mat-sys-on-surface: var(--hub-sys-text-body);
 		--mat-sys-outline: var(--hub-sys-border-color-default);
 	}
 }

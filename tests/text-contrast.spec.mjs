@@ -14,7 +14,7 @@
  * Themes and tokens are DISCOVERED from the sheet, so a new `[data-theme='x']`
  * or a new `--hub-sys-text-*` role comes under the guard with no edit here.
  *
- * Scope: the text ramp's OPAQUE roles. `--hub-sys-text-secondary` and
+ * Scope: the text ramp's OPAQUE roles. `--hub-sys-text-body-secondary` and
  * `-tertiary` are alpha over the theme's own ink by design, which makes their
  * ratio a property of whatever they are painted over rather than of a value the
  * package commits to; the advisory tier of `scripts/check-contrast.mjs` watches
