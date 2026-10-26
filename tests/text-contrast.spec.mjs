@@ -20,7 +20,9 @@
  * package commits to; the advisory tier of `scripts/check-contrast.mjs` watches
  * those, along with links, accents and the focus ring. A token that resolves to
  * neither an opaque colour nor an alpha ramp fails here rather than being
- * skipped, so nothing leaves the guard quietly.
+ * skipped, so nothing leaves the guard quietly. Accent text roles
+ * (`--hub-sys-text-<accent>`) alias the accent's `-emphasis`, which
+ * `scripts/check-contrast.mjs` asserts as required; here they must be that alias.
  *
  * Run: `npm test` from `projects/ds`.
  */
@@ -201,6 +203,17 @@ describe('text roles clear the contrast minimum the package declares', () => {
 		}
 
 		for (const token of textTokens) {
+			// Accent text (`--hub-sys-text-danger`…) is the accent's emphasis under a text name. Its relative-colour
+			// formula is beyond this parser, and `check:contrast` already holds every emphasis to 4.5:1 on both
+			// surfaces of every theme as a REQUIRED check, so here it only has to be exactly that alias.
+			const alias = vars.get(token)?.match(/^var\((--hub-sys-color-[a-z0-9-]+-emphasis)\)$/);
+			if (alias) {
+				it(`${theme}: ${token} is ${alias[1]}, which check:contrast holds to the minimum`, () => {
+					assert.ok(vars.has(alias[1]), `${token} points at ${alias[1]}, which theme "${theme}" does not declare`);
+				});
+				continue;
+			}
+
 			const value = resolve(token);
 			const color = parseColor(value);
 

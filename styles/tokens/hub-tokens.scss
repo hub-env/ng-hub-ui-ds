@@ -1,3 +1,4 @@
+@use 'sass:list';
 @use 'sass:map';
 
 /**
@@ -317,6 +318,11 @@ $hub-accents: (
 	dark: var(--hub-ref-color-gray-900, #212529)
 ) !default;
 
+// Accent names whose `--hub-sys-text-<name>` is the ink of ordinary text, so no accent text variable is generated
+// for them: `primary` and `secondary` until the major that frees them, and `tertiary` because a product may add a
+// `tertiary` accent while `--hub-sys-text-tertiary` is the lightest step of the ink.
+$hub-text-ink-names: primary, secondary, tertiary;
+
 // Additive override: pass ONLY the variants you add or retune, keeping the defaults.
 // Prefer this over replacing `$hub-accents` wholesale:
 //   @use 'ng-hub-ui-ds/styles/tokens/hub-tokens' with ($hub-accents-extra: (brand: #ff6b00));
@@ -435,7 +441,19 @@ $hub-accents-terminal: (
 		// Dark accents (L < .62) resolve to white text; light accents to near-black.
 		// Uses relative color syntax so it recomputes with the accent, no second token.
 		--hub-sys-color-#{$name}-on: oklch(from var(--hub-sys-color-#{$name}) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+		// Accent text as a system variable: `--hub-sys-text-danger`, `--hub-sys-text-success`… It is the accent's
+		// emphasis, the version steered for text, so it passes the text contrast guard on every theme where the raw
+		// accent (amber, cyan, light) does not. `primary`, `secondary` and `tertiary` are skipped while those names still
+		// mean the ink of ordinary text; the ink has moved to `--hub-sys-text-body*` below so they can be freed in a major.
+		@if not list.index($hub-text-ink-names, $name) {
+			--hub-sys-text-#{$name}: var(--hub-sys-color-#{$name}-emphasis);
+		}
 	}
+	// The ink of ordinary text under names that do not collide with any accent. Today they follow the
+	// `--hub-sys-text-primary/-secondary/-tertiary` every theme sets; libraries move to these first.
+	--hub-sys-text-body: var(--hub-sys-text-primary);
+	--hub-sys-text-body-secondary: var(--hub-sys-text-secondary);
+	--hub-sys-text-body-tertiary: var(--hub-sys-text-tertiary);
 }
 
 /* ============================================================

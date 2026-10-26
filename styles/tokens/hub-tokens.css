@@ -402,6 +402,7 @@
   		h
   );
   --hub-sys-color-success-on: oklch(from var(--hub-sys-color-success) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-success: var(--hub-sys-color-success-emphasis);
   --hub-sys-color-danger-subtle: color-mix(
   	in oklch,
   	var(--hub-sys-color-danger) 12%,
@@ -442,6 +443,7 @@
   		h
   );
   --hub-sys-color-danger-on: oklch(from var(--hub-sys-color-danger) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-danger: var(--hub-sys-color-danger-emphasis);
   --hub-sys-color-warning-subtle: color-mix(
   	in oklch,
   	var(--hub-sys-color-warning) 12%,
@@ -482,6 +484,7 @@
   		h
   );
   --hub-sys-color-warning-on: oklch(from var(--hub-sys-color-warning) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-warning: var(--hub-sys-color-warning-emphasis);
   --hub-sys-color-info-subtle: color-mix(
   	in oklch,
   	var(--hub-sys-color-info) 12%,
@@ -522,6 +525,7 @@
   		h
   );
   --hub-sys-color-info-on: oklch(from var(--hub-sys-color-info) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-info: var(--hub-sys-color-info-emphasis);
   --hub-sys-color-neutral-subtle: color-mix(
   	in oklch,
   	var(--hub-sys-color-neutral) 12%,
@@ -562,6 +566,7 @@
   		h
   );
   --hub-sys-color-neutral-on: oklch(from var(--hub-sys-color-neutral) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-neutral: var(--hub-sys-color-neutral-emphasis);
   --hub-sys-color-light-subtle: color-mix(
   	in oklch,
   	var(--hub-sys-color-light) 12%,
@@ -602,6 +607,7 @@
   		h
   );
   --hub-sys-color-light-on: oklch(from var(--hub-sys-color-light) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-light: var(--hub-sys-color-light-emphasis);
   --hub-sys-color-dark-subtle: color-mix(
   	in oklch,
   	var(--hub-sys-color-dark) 12%,
@@ -642,6 +648,10 @@
   		h
   );
   --hub-sys-color-dark-on: oklch(from var(--hub-sys-color-dark) clamp(0, (0.62 - l) * 1000, 1) 0 h);
+  --hub-sys-text-dark: var(--hub-sys-color-dark-emphasis);
+  --hub-sys-text-body: var(--hub-sys-text-primary);
+  --hub-sys-text-body-secondary: var(--hub-sys-text-secondary);
+  --hub-sys-text-body-tertiary: var(--hub-sys-text-tertiary);
   --hub-sys-color-ink: var(--hub-ref-color-gray-900, #212529);
   /* secondary / neutral / light / dark are emitted by the open accent map above,
      each with its own derived role family (-subtle, -border-subtle, -emphasis, -on). */

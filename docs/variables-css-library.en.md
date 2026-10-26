@@ -267,6 +267,9 @@ Semantic neutrals. The token names are stable across themes; only the literal va
 | `--hub-sys-text-secondary`       | `alpha 75% of text-primary`                 | inherits  |
 | `--hub-sys-text-tertiary`        | `alpha 50% of text-primary`                 | inherits  |
 | `--hub-sys-text-muted`           | `#6a737b`                                   | `#adb5bd` |
+| `--hub-sys-text-body`            | `var(--hub-sys-text-primary)`               | inherits  |
+| `--hub-sys-text-body-secondary`  | `var(--hub-sys-text-secondary)`             | inherits  |
+| `--hub-sys-text-body-tertiary`   | `var(--hub-sys-text-tertiary)`              | inherits  |
 | `--hub-sys-border-color-default` | `#dee2e6`                                   | `#343a40` |
 | `--hub-sys-border-color-strong`  | `color-mix(65% text-primary, surface-page)` | inherits  |
 | `--hub-sys-link-color`           | `var(--hub-sys-color-primary-emphasis)`     | inherits  |
@@ -288,6 +291,12 @@ darker and reads 4.83:1 and 4.58:1. It is a literal rather than a new ref step b
 still serves the `secondary` and `neutral` accents, which are not text and must not move with it.
 The two alpha roles above it, `-secondary` and `-tertiary`, are a de-emphasis ramp over the theme's
 own ink: their ratio is a property of whatever they are painted over, so they carry no guarantee.
+
+The three `--hub-sys-text-body*` tokens are the ink of ordinary text under names no accent can
+take. Today they follow `--hub-sys-text-primary`, `-secondary` and `-tertiary`, which every theme
+sets; components move to them first, so that a later major can give `--hub-sys-text-primary` and
+`-secondary` to the accents of the same name, as `--hub-sys-text-danger` and the rest already are
+(see the `text` role of the semantic colours).
 
 Links resolve through the `-emphasis` role rather than the raw accent because a link is body text
 and answers to 4.5:1 — the raw `#0d6efd` reaches 4.50:1 on `#ffffff` but only 4.27:1 on the
@@ -311,13 +320,14 @@ Semantic color families are **generated, not enumerated**. A theme sets only the
 
 **Roles per variant** and their derivation:
 
-| Role            | Token                                     | Derivation                                        |
-| --------------- | ----------------------------------------- | ------------------------------------------------- |
-| accent (base)   | `--hub-sys-color-{variant}`               | the only value a theme sets                       |
-| `subtle`        | `--hub-sys-color-{variant}-subtle`        | `color-mix(12% accent, surface)`                  |
-| `border-subtle` | `--hub-sys-color-{variant}-border-subtle` | `color-mix(35% accent, surface)`                  |
-| `emphasis`      | `--hub-sys-color-{variant}-emphasis`      | accent, lightness clamped into the theme's window |
-| `on`            | `--hub-sys-color-{variant}-on`            | grayscale contrast flip via relative color        |
+| Role            | Token                                     | Derivation                                                                                                                 |
+| --------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| accent (base)   | `--hub-sys-color-{variant}`               | the only value a theme sets                                                                                                |
+| `subtle`        | `--hub-sys-color-{variant}-subtle`        | `color-mix(12% accent, surface)`                                                                                           |
+| `border-subtle` | `--hub-sys-color-{variant}-border-subtle` | `color-mix(35% accent, surface)`                                                                                           |
+| `emphasis`      | `--hub-sys-color-{variant}-emphasis`      | accent, lightness clamped into the theme's window                                                                          |
+| `on`            | `--hub-sys-color-{variant}-on`            | grayscale contrast flip via relative color                                                                                 |
+| `text`          | `--hub-sys-text-{variant}`                | `var(--hub-sys-color-{variant}-emphasis)`; except `primary` · `secondary` · `tertiary`, whose text names are still the ink |
 
 **Canonical example (`primary`, light theme):**
 

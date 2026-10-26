@@ -5,6 +5,29 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.14.0] - 2026-10-26
+
+### Added
+
+- **Accent text has system variables.** `--hub-sys-text-danger`, `-success`, `-warning`, `-info`,
+  `-neutral`, `-light` and `-dark` exist now, one per accent of the open `$hub-accents` map, so an
+  accent a product adds gets its own too. Each is the accent's `-emphasis`, the version steered for
+  text, which `check:contrast` already holds to 4.5:1 on both surfaces of every theme; the raw
+  accent would not pass (the default amber and cyan read under 3:1 on white). `primary`,
+  `secondary` and `tertiary` get none: those text names still mean the ink of ordinary text, and a
+  product that adds a `tertiary` accent must not repaint its lightest ink.
+- **The ink of ordinary text has names no accent can take.** `--hub-sys-text-body`,
+  `--hub-sys-text-body-secondary` and `--hub-sys-text-body-tertiary` follow
+  `--hub-sys-text-primary`, `-secondary` and `-tertiary` for now. Components move to them first;
+  a later major then frees `--hub-sys-text-primary` and `-secondary` for their accents.
+
+### Changed
+
+- **The text contrast guard knows an accent text role.** A `--hub-sys-text-*` token that is
+  exactly `var(--hub-sys-color-<accent>-emphasis)` is checked to be that alias and left to the
+  required emphasis check, instead of failing because its relative-colour formula is beyond the
+  test's parser.
+
 ## [22.13.1] - 2026-09-28
 
 ### Added
