@@ -5,6 +5,26 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.14.1] - 2026-10-26
+
+### Fixed
+
+- **A theme applied to a subtree gets its own derived colours.** The `-subtle`, `-border-subtle`,
+  `-emphasis` and `-on` roles, the accent text variables and `--hub-sys-text-body*` were declared on
+  `:root` only. A custom property resolves its `var()` where it is declared and descendants inherit
+  the result, so inside a `[data-theme='dark']` section those roles kept their light values: body text
+  came out almost black on the dark surface. They are now declared on `:root` and on every
+  `[data-theme]` element, and a test fails if a `:root` block declares one without reaching every
+  theme. On an element without `data-theme`, overriding an accent or `--hub-sys-text-primary` still
+  changes only that variable and not what derives from it; the docs said otherwise and now say so.
+
+### Changed
+
+- **The catalogue documents the components on the new ink names.** Every component row that showed
+  `--hub-sys-text-primary`, `-secondary` or `-tertiary` as its default now shows
+  `--hub-sys-text-body*`, matching the libraries, and the authoring guideline names
+  `--hub-sys-text-body` as the default text token.
+
 ## [22.14.0] - 2026-10-26
 
 ### Added

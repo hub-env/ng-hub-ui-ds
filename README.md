@@ -334,8 +334,8 @@ Group your overrides under a theme attribute and activate it whenever you want:
 
 The semantic colour families are **not written by hand**, and a theme only ever
 sets the **accent** of each variant — `-subtle`, `-border-subtle`, `-emphasis` and
-`-on` are derived **once** in `:root` from the live accent, surface and ink CSS
-variables. The variant names live in a single **open** Sass map, so adding a colour
+`-on` are derived from the live accent, surface and ink CSS variables, on `:root`
+and on every `[data-theme]` element. The variant names live in a single **open** Sass map, so adding a colour
 or a theme is uniform and boilerplate-free.
 
 ```scss
@@ -365,9 +365,9 @@ $hub-accents: map.merge($hub-accents, $hub-accents-extra);
 	}
 }
 
-// Derives the role family from the live accent + surface + ink. Emitted ONCE in
-// :root over the open set, so every variant — including the ones you added — gets
-// its full family for free.
+// Derives the role family from the live accent + surface + ink. Emitted on :root
+// and on every [data-theme] element over the open set, so every variant — including
+// the ones you added — gets its full family for free.
 @mixin hub-color-derive() {
 	@each $name in map.keys($hub-accents) {
 		--hub-sys-color-#{$name}-subtle: color-mix(
@@ -398,14 +398,21 @@ $hub-accents: map.merge($hub-accents, $hub-accents-extra);
 :root,
 [data-theme='light'] {
 	@include hub-color-accents($hub-accents);
+}
+
+:root,
+[data-theme] {
 	@include hub-color-derive();
 }
 ```
 
-> You almost never need to touch the SCSS: because the family is derived from the
-> **single accent** at runtime, overriding `--hub-sys-color-<variant>` in plain CSS
-> — even on a subtree — recomputes `-subtle` / `-border-subtle` / `-emphasis` /
-> `-on` automatically. The maps + mixins are just the internal mechanism, useful if
+> You almost never need to touch the SCSS: the family is derived from the **single
+> accent** at runtime, so overriding `--hub-sys-color-<variant>` in plain CSS
+> recomputes `-subtle` / `-border-subtle` / `-emphasis` / `-on` on `:root` and inside
+> any element that carries `data-theme`. On any other element the override changes
+> the accent but not its family, because a custom property resolves its `var()` where
+> it is declared and descendants inherit the result: give that element a
+> `data-theme`, or include `hub-color-derive()` in its rule. The maps + mixins are just the internal mechanism, useful if
 > you contribute to the package or compile your own palette variant.
 
 ### Writing a dark theme of your own

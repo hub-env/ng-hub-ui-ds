@@ -332,8 +332,8 @@ Reúne tus overrides bajo un atributo de tema y actívalo cuando quieras:
 
 Las familias de color semántico **no se escriben a mano**, y un tema solo fija el
 **acento** de cada variante — `-subtle`, `-border-subtle`, `-emphasis` y `-on` se
-derivan **una sola vez** en `:root` a partir del acento, la superficie y el _ink_
-vivos. Los nombres de las variantes viven en un único mapa Sass **abierto**, así
+derivan del acento, la superficie y el _ink_ vivos, en `:root` y en cada elemento
+con `[data-theme]`. Los nombres de las variantes viven en un único mapa Sass **abierto**, así
 que añadir un color o un tema es uniforme y sin _boilerplate_.
 
 ```scss
@@ -363,9 +363,9 @@ $hub-accents: map.merge($hub-accents, $hub-accents-extra);
 	}
 }
 
-// Deriva la familia de roles del acento + superficie + ink vivos. Se emite UNA vez
-// en :root sobre el conjunto abierto, así que cada variante — incluidas las tuyas —
-// obtiene su familia completa gratis.
+// Deriva la familia de roles del acento + superficie + ink vivos. Se emite en :root
+// y en cada elemento con [data-theme] sobre el conjunto abierto, así que cada
+// variante — incluidas las tuyas — obtiene su familia completa gratis.
 @mixin hub-color-derive() {
 	@each $name in map.keys($hub-accents) {
 		--hub-sys-color-#{$name}-subtle: color-mix(
@@ -397,14 +397,21 @@ $hub-accents: map.merge($hub-accents, $hub-accents-extra);
 :root,
 [data-theme='light'] {
 	@include hub-color-accents($hub-accents);
+}
+
+:root,
+[data-theme] {
 	@include hub-color-derive();
 }
 ```
 
-> Casi nunca necesitas tocar el SCSS: como la familia se deriva del **acento
-> único** en tiempo de ejecución, sobrescribir `--hub-sys-color-<variante>` en CSS
-> plano — incluso en un subárbol — recalcula `-subtle` / `-border-subtle` /
-> `-emphasis` / `-on` automáticamente. Los mapas + mixins son solo la mecánica
+> Casi nunca necesitas tocar el SCSS: la familia se deriva del **acento único** en
+> tiempo de ejecución, así que sobrescribir `--hub-sys-color-<variante>` en CSS plano
+> recalcula `-subtle` / `-border-subtle` / `-emphasis` / `-on` en `:root` y dentro de
+> cualquier elemento que lleve `data-theme`. En otro elemento cambia el acento pero no
+> su familia, porque una propiedad personalizada resuelve su `var()` donde se declara
+> y los descendientes heredan el resultado: ponle `data-theme` a ese elemento o
+> incluye `hub-color-derive()` en su regla. Los mapas + mixins son solo la mecánica
 > interna, útil si contribuyes al paquete o compilas tu propia variante de la paleta.
 
 ### Escribir un tema oscuro propio

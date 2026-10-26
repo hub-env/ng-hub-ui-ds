@@ -393,9 +393,10 @@ $hub-accents-terminal: (
 
 /// Derives the role family from the live accent + surface + ink CSS variables.
 /// Iterates the open `$hub-accents` set, so every variant — including neutrals and
-/// any color the user adds to the map — gets its full family for free. Emitted ONCE
-/// in :root; every theme only overrides the inputs, so the family recomputes
-/// contextually wherever it is consumed.
+/// any color the user adds to the map — gets its full family for free. Emitted on
+/// :root and on every `[data-theme]` element, because a custom property resolves
+/// its `var()` where it is declared and descendants inherit the result: emitted on
+/// :root alone, a `[data-theme='dark']` subtree would keep the light family.
 @mixin hub-color-derive() {
 	@each $name in map.keys($hub-accents) {
 		--hub-sys-color-#{$name}-subtle: color-mix(
@@ -473,7 +474,6 @@ $hub-accents-terminal: (
 	--hub-sys-emphasis-lightness-min: 0;
 	--hub-sys-emphasis-lightness-max: 0.45;
 	@include hub-color-accents($hub-accents);
-	@include hub-color-derive();
 	--hub-sys-color-ink: var(--hub-ref-color-gray-900, #212529);
 	/* secondary / neutral / light / dark are emitted by the open accent map above,
 	   each with its own derived role family (-subtle, -border-subtle, -emphasis, -on). */
@@ -676,6 +676,12 @@ $hub-accents-terminal: (
 	--hub-sys-transition-collapse: height 0.35s ease;
 	--hub-sys-transition-duration-base: 260ms;
 	--hub-sys-transition-timing-function-base: ease;
+}
+
+/* Re-derived on every theme root, so a theme applied to a subtree gets its own family. */
+:root,
+[data-theme] {
+	@include hub-color-derive();
 }
 
 /* ============================================================
