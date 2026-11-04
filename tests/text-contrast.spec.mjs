@@ -14,12 +14,11 @@
  * Themes and tokens are DISCOVERED from the sheet, so a new `[data-theme='x']`
  * or a new `--hub-sys-text-*` role comes under the guard with no edit here.
  *
- * Scope: the text ramp's OPAQUE roles. `--hub-sys-text-body-secondary` and
- * `-tertiary` are alpha over the theme's own ink by design, which makes their
- * ratio a property of whatever they are painted over rather than of a value the
- * package commits to; the advisory tier of `scripts/check-contrast.mjs` watches
- * those, along with links, accents and the focus ring. A token that resolves to
- * neither an opaque colour nor an alpha ramp fails here rather than being
+ * Scope: every text role. `--hub-sys-text-body-secondary` and `-tertiary` are
+ * the theme's own ink at an alpha, and each theme sets that alpha so the result
+ * reaches the minimum on both surfaces it ships; they are measured painted over
+ * each surface, the way a reader sees them. A token that resolves to neither an
+ * opaque colour nor an alpha ramp over a colour fails here rather than being
  * skipped, so nothing leaves the guard quietly. Accent text roles
  * (`--hub-sys-text-<accent>`) alias the accent's `-emphasis`, which
  * `scripts/check-contrast.mjs` asserts as required; here they must be that alias.
@@ -217,16 +216,30 @@ describe('text roles clear the contrast minimum the package declares', () => {
 			const value = resolve(token);
 			const color = parseColor(value);
 
-			// The alpha ramp is a deliberate non-value: it is whatever it is painted
-			// over, so it is watched by the advisory tier, not asserted here.
+			// The de-emphasis ramp: the ink at an alpha, so it is measured painted over each surface.
 			if (!color || color.a < 1) {
-				it(`${theme}: ${token} is the declared alpha ramp, not an unreadable value`, () => {
-					assert.match(
-						value,
-						/transparent/,
-						`${token} resolved to "${value}" on theme "${theme}": neither an opaque colour nor an alpha ramp, so nothing measures it`
-					);
-				});
+				const ramp = value.match(/^color-mix\(in srgb,\s*(.+?)\s+([\d.]+)%,\s*transparent\)$/);
+				const ink = color ?? (ramp && parseColor(ramp[1]));
+				const alpha = color ? color.a : ramp && Number(ramp[2]) / 100;
+
+				for (const [name, surface] of surfaces) {
+					it(`${theme}: ${token} painted on --hub-sys-${name}`, () => {
+						assert.ok(
+							ink,
+							`${token} resolved to "${value}" on theme "${theme}": neither an opaque colour nor an alpha ramp over a colour, so nothing measures it`
+						);
+						const painted = {
+							r: ink.r * alpha + surface.r * (1 - alpha),
+							g: ink.g * alpha + surface.g * (1 - alpha),
+							b: ink.b * alpha + surface.b * (1 - alpha)
+						};
+						const ratio = contrast(painted, surface);
+						assert.ok(
+							ratio >= MINIMUM,
+							`${token} (${value}) measures ${ratio.toFixed(2)}:1 painted on ${name} of theme "${theme}", under the ${MINIMUM}:1 minimum`
+						);
+					});
+				}
 				continue;
 			}
 

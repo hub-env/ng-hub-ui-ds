@@ -316,11 +316,15 @@
       Text
    ---------------------------------------------------------- */
   --hub-sys-text-body: var(--hub-ref-color-gray-900, #212529);
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
   --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 64%, transparent);
   /* Muted is body text, so it answers to 4.5:1 — and the ref ramp's `gray-600`
      (#6c757d) does not get there: 4.69:1 on the page but 4.44:1 on the elevated
      surface, which is the one a card, a table head or an input sits on. #6a737b is
@@ -873,11 +877,15 @@
   --hub-sys-surface-page: var(--hub-ref-surface-1, #ffffff);
   --hub-sys-surface-elevated: var(--hub-ref-surface-2, #f8f9fa);
   --hub-sys-text-body: var(--hub-ref-color-gray-900, #212529);
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
   --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 64%, transparent);
   /* Literal, not `gray-600`: that grey reads 4.44:1 on the elevated surface. */
   --hub-sys-text-muted: #6a737b;
   --hub-sys-border-color-default: var(--hub-ref-color-gray-300, #dee2e6);
@@ -903,11 +911,15 @@
   --hub-sys-surface-page: #ffffff;
   --hub-sys-surface-elevated: #f8f9fa;
   --hub-sys-text-body: #212529;
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
   --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 64%, transparent);
   /* Bootstrap's own `$gray-600` is #6c757d, and it fails the same way here as it
      does there: 4.44:1 on the elevated surface. The look survives one step of
      darkening, the reading does not survive leaving it. */
@@ -966,9 +978,13 @@
       Text
    ---------------------------------------------------------- */
   --hub-sys-text-body: var(--hub-ref-color-gray-100, #f8f9fa);
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
   --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
   --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
   --hub-sys-text-muted: var(--hub-ref-color-gray-500, #adb5bd);
@@ -1008,11 +1024,15 @@
   --hub-sys-surface-page: #fff7ed;
   --hub-sys-surface-elevated: #ffedd5;
   --hub-sys-text-body: #7c2d12;
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
-  --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
+  --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 86%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 76%, transparent);
   --hub-sys-text-muted: #9a3412;
   /* The hand-picked #c2410c cleared 4.5:1 by two hundredths on the elevated
      surface — true today, and false the moment a browser rounds differently. The
@@ -1045,11 +1065,15 @@
   --hub-sys-surface-page: #f0fdf4;
   --hub-sys-surface-elevated: #dcfce7;
   --hub-sys-text-body: #14532d;
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
-  --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
+  --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 87%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 77%, transparent);
   --hub-sys-text-muted: #3f6212;
   --hub-sys-border-color-default: #86efac;
   --hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(20, 83, 45, 0.16);
@@ -1079,11 +1103,15 @@
   --hub-sys-surface-page: #f9fafb;
   --hub-sys-surface-elevated: #f3f4f6;
   --hub-sys-text-body: #111827;
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
   --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 61%, transparent);
   --hub-sys-text-muted: #4b5563;
   --hub-sys-border-color-default: #d1d5db;
   --hub-sys-shadow-sm: 0 0.125rem 0.25rem rgba(17, 24, 39, 0.1);
@@ -1146,11 +1174,15 @@
       Text — green phosphor, cyan links
    ---------------------------------------------------------- */
   --hub-sys-text-body: #66f08f;
-  /* The de-emphasis ramp: alpha over the theme's own ink, so it follows any
-     re-theme without a per-theme value. `secondary` here is the TEXT role,
-     not the `secondary` ACCENT (a blue in most themes). */
+  /* The de-emphasis ramp: the theme's own ink at a lower alpha. Both steps are
+     text and answer to 4.5:1, which an alpha cannot promise on its own: the room
+     depends on how far the ink sits from the surface. So each theme sets its own
+     pair, the lowest alpha that still reads 4.5:1 on every surface it ships (page
+     and elevated). A surface the theme does not ship is the product's to check.
+     `secondary` here is the TEXT role, not the `secondary` ACCENT (a blue in most
+     themes). */
   --hub-sys-text-body-secondary: color-mix(in srgb, var(--hub-sys-text-body) 75%, transparent);
-  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 50%, transparent);
+  --hub-sys-text-body-tertiary: color-mix(in srgb, var(--hub-sys-text-body) 55%, transparent);
   --hub-sys-text-muted: #3f9e63;
   --hub-sys-link-color: #56e1e6;
   --hub-sys-link-hover-color: #8dffb0;

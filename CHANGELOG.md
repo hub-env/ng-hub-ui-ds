@@ -5,6 +5,24 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.16.0] - 2026-11-04
+
+### Changed
+
+- **Secondary and tertiary text reach 4.5:1 in every theme.** `--hub-sys-text-body-secondary` and
+  `--hub-sys-text-body-tertiary` were the theme's ink at 75% and 50% in every theme, and an alpha
+  cannot promise a ratio by itself, because the room depends on how far the ink sits from the
+  surface. Tertiary fell under 4.5:1 in six of the seven themes, down to 2.47:1 on the elevated
+  surface of `forest`, and secondary in two. Each theme now sets its own pair, the lowest alpha
+  that still reads 4.5:1 on its page and elevated surfaces: light and bootstrap 75% / 64%, dark
+  75% / 50% (as before), sunset 86% / 76%, forest 87% / 77%, mono 75% / 61%, terminal 75% / 55%.
+  Tertiary text darkens in every theme except dark, and secondary in sunset and forest. A surface
+  the theme does not ship is still the product's to check.
+- **The contrast guard holds both roles, and `--hub-sys-text-muted`, as required checks.**
+  `check:contrast` used to list them in the advisory tier; it now fails the build when any of the
+  three drops under the minimum on either surface, and the package tests measure the ramp painted
+  over each surface instead of only checking that it is a ramp.
+
 ## [22.15.0] - 2026-10-26
 
 ### Changed

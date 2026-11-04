@@ -16,8 +16,7 @@
  *   node scripts/check-contrast.mjs --all    # also prints the advisory tier
  *
  * The advisory tier covers roles the library knowingly ships below the bar —
- * the decorative hairline, the de-emphasis text ramp, a solid accent's own
- * boundary. They are printed so a regression is visible, and they do not fail
+ * the decorative hairline and a solid accent's own boundary. They are printed so a regression is visible, and they do not fail
  * the build; promoting one means fixing the token first.
  */
 
@@ -403,6 +402,11 @@ for (const theme of themes) {
 	against(required, '--hub-sys-link-color', 4.5, 'text on surface');
 	against(required, '--hub-sys-link-hover-color', 4.5, 'text on surface');
 	against(required, '--hub-sys-text-body', 4.5, 'text on surface');
+	// The de-emphasis ramp is text too. Each theme sets its alpha so that, painted
+	// over either surface, it still reaches the minimum.
+	against(required, '--hub-sys-text-body-secondary', 4.5, 'text on surface');
+	against(required, '--hub-sys-text-body-tertiary', 4.5, 'text on surface');
+	against(required, '--hub-sys-text-muted', 4.5, 'text on surface');
 
 	// 1.4.11 — non-text: the focus indicator and an interactive control's boundary.
 	against(required, '--hub-sys-focus-ring-color', 3, 'focus indicator');
@@ -410,9 +414,6 @@ for (const theme of themes) {
 
 	// Advisory: known-below-bar roles, watched so a regression is at least visible.
 	against(advisory, '--hub-sys-border-color-default', 3, 'decorative hairline');
-	against(advisory, '--hub-sys-text-body-secondary', 4.5, 'de-emphasis ramp');
-	against(advisory, '--hub-sys-text-muted', 4.5, 'de-emphasis ramp');
-	against(advisory, '--hub-sys-text-body-tertiary', 4.5, 'de-emphasis ramp');
 	for (const accent of accents) {
 		against(advisory, `--hub-sys-color-${accent}`, 3, 'solid accent boundary');
 		const base = get(`--hub-sys-color-${accent}`);
