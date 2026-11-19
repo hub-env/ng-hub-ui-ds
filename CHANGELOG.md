@@ -5,6 +5,34 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.17.0] - 2026-11-19
+
+### Added
+
+- **Glass layer.** Floating surfaces (modal, dropdown and overlay panels, select and datepicker
+  panels, toast, floating side panel) can be translucent and blurred, and buttons get a light edge.
+  It is opt-in: it turns on with `[data-hub-glass]` on any ancestor or with the new `glass` theme,
+  and every other theme stays opaque. Knobs on `:root`: `--hub-sys-glass-strength` (0.5),
+  `--hub-sys-glass-saturate`, `--hub-sys-glass-rim-strength`, `--hub-sys-glass-rim-color`,
+  `--hub-sys-glass-light-strength`, `--hub-sys-glass-light-color`, `--hub-sys-glass-light-size`.
+- **The `hub-glass-surface` contract.** A surface opts in with the class and reads
+  `--hub-sys-glass-opacity` for its background, `--hub-sys-glass-sheen` for its background image,
+  `--hub-sys-glass-filter` for `backdrop-filter` and `--hub-sys-glass-rim` first in its
+  `box-shadow`, each with an opaque fallback. The derived values are declared only on
+  `.hub-glass-surface` inside a glass scope, never on `:root`. `--hub-sys-glass-inner-opacity`,
+  `-veil`, `-gloss` and `-blur` are derived there too.
+- **Accessibility fallbacks.** `prefers-reduced-transparency: reduce`, `prefers-contrast: more` and
+  `forced-colors: active` return the surface to opaque, and so does a browser without
+  `backdrop-filter`.
+- **`glass` theme.** The base palette with strength 0.6, a pointer sheen at 0.18 and a page backdrop
+  of three soft accent gradients.
+- **`--hub-sys-page-backdrop`.** The reset paints it on the `body` as a fixed background image
+  (`none` by default).
+- **Pointer sheen.** The highlight follows the pointer through `--hub-glass-light-x/-y`, written by
+  `provideHubGlassLight()`, which lives in `ng-hub-ui-utils`, not in this package.
+- Tests for the layer (`tests/glass-layer.spec.mjs`); the contrast guards pick up the `glass` theme
+  from the sheet.
+
 ## [22.16.0] - 2026-11-04
 
 ### Changed

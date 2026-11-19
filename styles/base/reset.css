@@ -29,6 +29,9 @@ body {
   line-height: var(--hub-ref-line-height-base);
   color: var(--hub-sys-text-body);
   background-color: var(--hub-sys-surface-page);
+  /* Empty unless a theme paints one (the glass theme does): something behind the page for glass to blur. */
+  background-image: var(--hub-sys-page-backdrop, none);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

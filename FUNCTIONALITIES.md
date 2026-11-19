@@ -38,10 +38,17 @@ Unlike the rest of the family, this package ships **no components**: it is CSS a
 |                   | `forest`                                                                                                                                                       |       ✅        |
 |                   | `mono`                                                                                                                                                         |       ✅        |
 |                   | `terminal`                                                                                                                                                     |       ✅        |
+|                   | `glass` (base palette with the glass layer on and a page backdrop)                                                                                             |       ✅        |
 |                   | Region theming — `data-theme` on any container, not just `<html>`                                                                                              |       ✅        |
 | **Delivery**      | Compiled `hub-tokens.css` for Sass-less apps                                                                                                                   |       ❌        |
 |                   | SCSS source with `@use … with ($hub-accents-extra: …)`                                                                                                         |       ✅        |
+| **Glass**         | Opt-in glass layer (`[data-hub-glass]` or the `glass` theme)                                                                                                   |       ✅        |
+|                   | Glass knobs (`--hub-sys-glass-strength`, `-saturate`, `-rim-*`, `-light-*`)                                                                                    |       ✅        |
+|                   | `hub-glass-surface` contract (opacity, sheen, filter, rim, veil, gloss)                                                                                        |       ❌        |
+|                   | Page backdrop (`--hub-sys-page-backdrop`, painted by the reset)                                                                                                |       ✅        |
+|                   | Pointer sheen (`--hub-glass-light-x/-y`, written by `provideHubGlassLight()` in `ng-hub-ui-utils`)                                                             |       ✅        |
 | **Accessibility** | Contrast guard over the shipped defaults (`npm run check:contrast`)                                                                                            |       ❌        |
+|                   | Glass falls back to opaque with reduced transparency, more contrast, forced colours or no `backdrop-filter`                                                    |       ❌        |
 
 ## Sass mixins (`@use 'ng-hub-ui-ds' as hub`)
 

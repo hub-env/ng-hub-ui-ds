@@ -668,6 +668,94 @@ $hub-accents-terminal: (
 	--hub-sys-transition-collapse: height 0.35s ease;
 	--hub-sys-transition-duration-base: 260ms;
 	--hub-sys-transition-timing-function-base: ease;
+
+	/* ----------------------------------------------------------
+     Glass — the knobs of the glass layer (see the block after this one).
+     They do nothing until an ancestor carries [data-hub-glass] or the
+     glass theme, so every theme stays opaque by default.
+  ---------------------------------------------------------- */
+	--hub-sys-glass-strength: 0.5;
+	--hub-sys-glass-saturate: 1.4;
+	--hub-sys-glass-rim-strength: 0.5;
+	--hub-sys-glass-rim-color: #ffffff;
+	--hub-sys-glass-light-strength: 0;
+	--hub-sys-glass-light-color: #ffffff;
+	--hub-sys-glass-light-size: 16rem;
+	--hub-sys-page-backdrop: none;
+}
+
+/* ============================================================
+   Glass layer — translucent, blurred floating surfaces over any theme.
+
+   Turned on by [data-hub-glass] on any ancestor (usually <html>) or by the
+   glass theme. A component opts a surface in with the `hub-glass-surface`
+   class and reads four values, each with an opaque fallback, so a surface
+   outside the layer renders exactly as before:
+
+     background-color: color-mix(in srgb, <its bg> var(--hub-sys-glass-opacity, 100%), transparent);
+     background-image: var(--hub-sys-glass-sheen, none);
+     backdrop-filter: var(--hub-sys-glass-filter, none);
+     box-shadow: var(--hub-sys-glass-rim, 0 0 #0000), <its shadow>;
+
+   The values are derived on the surface itself, not on the root, for two
+   reasons: the strength can then be overridden on one surface, and the
+   sheen can follow the pointer through `--hub-glass-light-x/-y`, which
+   provideHubGlassLight() (ng-hub-ui-utils) writes on the surface under it.
+   Without that provider the sheen stays at the top edge.
+   ============================================================ */
+
+[data-hub-glass] .hub-glass-surface,
+.hub-glass-surface[data-hub-glass],
+[data-theme='glass'] .hub-glass-surface {
+	--hub-sys-glass-opacity: calc(100% - 70% * var(--hub-sys-glass-strength));
+	/* A band inside a glass surface (a dialog's footer) lets the surface's own tint show through
+	   instead of laying a second one over it. */
+	--hub-sys-glass-inner-opacity: 0%;
+	/* A frosted veil for controls that are transparent at rest (an outline button), so they read as
+	   glass rather than as a line drawn on whatever is behind. */
+	--hub-sys-glass-veil: color-mix(in srgb, var(--hub-sys-surface-page) 55%, transparent);
+	/* Light caught on the upper half of a small control (a button), which is what reads as glass
+	   on a surface too small for its blur to show. */
+	--hub-sys-glass-gloss: linear-gradient(
+		180deg,
+		color-mix(in srgb, var(--hub-sys-glass-rim-color) calc(var(--hub-sys-glass-rim-strength) * 50%), transparent) 0%,
+		transparent 60%
+	);
+	--hub-sys-glass-blur: calc(24px * var(--hub-sys-glass-strength));
+	--hub-sys-glass-filter: blur(var(--hub-sys-glass-blur)) saturate(var(--hub-sys-glass-saturate));
+	--hub-sys-glass-rim: inset 0 1px 0 0
+		color-mix(in srgb, var(--hub-sys-glass-rim-color) calc(var(--hub-sys-glass-rim-strength) * 100%), transparent);
+	--hub-sys-glass-sheen: radial-gradient(
+		var(--hub-sys-glass-light-size) circle at var(--hub-glass-light-x, 50%) var(--hub-glass-light-y, 0%),
+		color-mix(in srgb, var(--hub-sys-glass-light-color) calc(var(--hub-sys-glass-light-strength) * 100%), transparent),
+		transparent
+	);
+}
+
+/* Whoever asked the system for less transparency or more contrast gets the
+   opaque surface back, and so does a browser that cannot blur what is behind:
+   a translucent panel over unblurred text is harder to read than either. */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+	[data-hub-glass] .hub-glass-surface,
+	.hub-glass-surface[data-hub-glass],
+	[data-theme='glass'] .hub-glass-surface {
+		--hub-sys-glass-opacity: 100%;
+		--hub-sys-glass-inner-opacity: 100%;
+		--hub-sys-glass-veil: transparent;
+		--hub-sys-glass-gloss: none;
+		--hub-sys-glass-filter: none;
+		--hub-sys-glass-sheen: none;
+	}
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+	[data-hub-glass] .hub-glass-surface,
+	.hub-glass-surface[data-hub-glass],
+	[data-theme='glass'] .hub-glass-surface {
+		--hub-sys-glass-opacity: 100%;
+		--hub-sys-glass-inner-opacity: 100%;
+		--hub-sys-glass-filter: none;
+	}
 }
 
 /* Re-derived on every theme root, so a theme applied to a subtree gets its own family. */
@@ -933,6 +1021,22 @@ $hub-accents-terminal: (
 	--hub-sys-gradient-1: #111827;
 	--hub-sys-gradient-2: #374151;
 	--hub-sys-gradient-3: #6b7280;
+}
+
+/* ============================================================
+   LAYER 2 — sys (glass theme)
+   The base palette with the glass layer switched on and a soft
+   backdrop behind the page, so the floating surfaces have something
+   to blur. Glass over another theme is [data-hub-glass] on top of it.
+   ============================================================ */
+
+[data-theme='glass'] {
+	--hub-sys-glass-strength: 0.6;
+	--hub-sys-glass-light-strength: 0.18;
+	--hub-sys-page-backdrop:
+		radial-gradient(60rem 40rem at 10% 0%, color-mix(in srgb, var(--hub-sys-color-primary) 22%, transparent), transparent),
+		radial-gradient(50rem 40rem at 95% 15%, color-mix(in srgb, var(--hub-sys-gradient-2) 18%, transparent), transparent),
+		radial-gradient(50rem 40rem at 50% 100%, color-mix(in srgb, var(--hub-sys-gradient-3) 16%, transparent), transparent);
 }
 
 /* ============================================================

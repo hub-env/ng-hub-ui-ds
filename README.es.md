@@ -217,12 +217,59 @@ contenedor para tematizar una zona):
 
 ```html
 <html data-theme="dark">
-	<!-- light (por defecto) · base · bootstrap · dark · sunset · forest · mono · terminal -->
+	<!-- light (por defecto) · base · bootstrap · dark · sunset · forest · mono · terminal · glass -->
 </html>
 ```
 
 Como cada tema **redefine los mismos tokens** con sus valores, todo lo que lee
 `--hub-sys-*` se re-colorea automáticamente, incluido tu propio CSS.
+
+### Capa glass
+
+Glass vuelve translúcidas y desenfocadas las superficies flotantes (modal,
+paneles de dropdown y overlay, paneles de select y datepicker, toast, panel
+lateral flotante) y da a los botones un borde de luz. Viene apagada por defecto.
+Se enciende con el tema `glass`, o sobre cualquier otro tema con `data-hub-glass`:
+
+```html
+<html data-theme="glass">
+	<!-- o: <html data-theme="dark" data-hub-glass> -->
+</html>
+```
+
+`--hub-sys-glass-strength` (de 0 a 1, por defecto `0.5`; el tema glass usa
+`0.6`) fija cuánto se transparenta la superficie y cuánto desenfoca. El resto de
+ajustes son `--hub-sys-glass-saturate`, `--hub-sys-glass-rim-strength` y
+`-rim-color`, `--hub-sys-glass-light-strength`, `-light-color` y `-light-size`, y
+`--hub-sys-page-backdrop`, un fondo que el `body` pinta fijo para que haya algo
+que desenfocar (el tema glass pone tres degradados suaves).
+
+Un componente propio se suma añadiendo la clase `hub-glass-surface` y leyendo los
+valores con un respaldo opaco, de modo que siga sólido donde glass esté apagada:
+
+```scss
+.my-panel {
+	background-color: color-mix(in srgb, var(--hub-sys-surface-elevated) var(--hub-sys-glass-opacity, 100%), transparent);
+	background-image: var(--hub-sys-glass-sheen, none);
+	backdrop-filter: var(--hub-sys-glass-filter, none);
+	box-shadow: var(--hub-sys-glass-rim, 0 0 #0000), var(--hub-sys-shadow-md);
+}
+```
+
+Los valores derivados (`--hub-sys-glass-opacity`, `-filter`, `-rim`, `-sheen`,
+`-veil`, `-gloss`, `-inner-opacity`) existen solo en `.hub-glass-surface` dentro
+de un ámbito glass. El brillo que sigue al puntero necesita
+`provideHubGlassLight()` de `ng-hub-ui-utils`, que escribe
+`--hub-glass-light-x/-y`; sin él el brillo se queda en el borde superior, y no se
+ve mientras `--hub-sys-glass-light-strength` sea 0.
+
+Accesibilidad: con `prefers-reduced-transparency: reduce`, `prefers-contrast: more`,
+colores forzados o un navegador sin `backdrop-filter`, las superficies vuelven a
+ser opacas.
+
+Las superficies en el flujo (cards, nav) reciben la translucidez pero no el
+desenfoque. Chrome oscurecía el borde de una card desenfocada que quedaba a medias
+fuera de pantalla, y sobre un fondo suave el desenfoque no aportaba nada.
 
 ---
 

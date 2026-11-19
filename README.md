@@ -218,13 +218,61 @@ container to theme a region):
 
 ```html
 <html data-theme="dark">
-	<!-- light (default) · base · bootstrap · dark · sunset · forest · mono · terminal -->
+	<!-- light (default) · base · bootstrap · dark · sunset · forest · mono · terminal · glass -->
 </html>
 ```
 
 Because each theme **redefines the same tokens** with its own values,
 everything that reads `--hub-sys-*` re-colours automatically, including your
 own CSS.
+
+### Glass layer
+
+Glass makes floating surfaces (modal, dropdown and overlay panels, select and
+datepicker panels, toast, floating side panel) translucent and blurred, and
+gives buttons a light edge. It is off by default. Turn it on with the `glass`
+theme, or over any other theme with `data-hub-glass`:
+
+```html
+<html data-theme="glass">
+	<!-- or: <html data-theme="dark" data-hub-glass> -->
+</html>
+```
+
+`--hub-sys-glass-strength` (0 to 1, default `0.5`; the glass theme uses `0.6`)
+sets how translucent the surface is and how much it blurs. The other knobs are
+`--hub-sys-glass-saturate`, `--hub-sys-glass-rim-strength` and `-rim-color`,
+`--hub-sys-glass-light-strength`, `-light-color` and `-light-size`, and
+`--hub-sys-page-backdrop`, a background the `body` paints fixed so there is
+something to blur (the glass theme sets three soft gradients).
+
+A component of your own opts in by adding the class `hub-glass-surface` and
+reading the values with an opaque fallback, so it stays solid wherever glass is
+off:
+
+```scss
+.my-panel {
+	background-color: color-mix(in srgb, var(--hub-sys-surface-elevated) var(--hub-sys-glass-opacity, 100%), transparent);
+	background-image: var(--hub-sys-glass-sheen, none);
+	backdrop-filter: var(--hub-sys-glass-filter, none);
+	box-shadow: var(--hub-sys-glass-rim, 0 0 #0000), var(--hub-sys-shadow-md);
+}
+```
+
+The derived values (`--hub-sys-glass-opacity`, `-filter`, `-rim`, `-sheen`,
+`-veil`, `-gloss`, `-inner-opacity`) exist only on `.hub-glass-surface` inside a
+glass scope. The pointer-following sheen needs `provideHubGlassLight()` from
+`ng-hub-ui-utils`, which writes `--hub-glass-light-x/-y`; without it the sheen
+stays at the top edge, and it is invisible unless `--hub-sys-glass-light-strength`
+is above 0.
+
+Accessibility: with `prefers-reduced-transparency: reduce`,
+`prefers-contrast: more`, forced colours, or a browser without `backdrop-filter`,
+the surfaces go back to opaque.
+
+In-flow surfaces (cards, nav) take the translucency but not the blur. Chrome
+darkened the edge of a blurred card that sat half off-screen, and over a soft
+backdrop the blur added nothing.
 
 ---
 
