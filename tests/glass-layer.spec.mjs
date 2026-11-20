@@ -45,6 +45,12 @@ const root = blocks.filter((b) => b.selectors.includes(':root'));
 const rootValue = (name) => root.map((b) => b.vars.get(name)).find((v) => v !== undefined);
 
 describe('glass layer', () => {
+	it('does not let a surface inherit the pointer position of the surface around it', () => {
+		const block = surfaceBlocks.find((b) => b.vars.has('--hub-sys-glass-opacity'));
+		assert.equal(block.vars.get('--hub-glass-light-x'), 'initial');
+		assert.equal(block.vars.get('--hub-glass-light-y'), 'initial');
+	});
+
 	it('keeps the sheen out of sight while no pointer is over the surface', () => {
 		const sheen = surfaceBlocks.map((b) => b.vars.get('--hub-sys-glass-sheen')).find(Boolean);
 		// Resting at the top edge, every surface showed a glow beside the one under the pointer.

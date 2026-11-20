@@ -5,6 +5,16 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.17.2] - 2026-11-20
+
+### Fixed
+
+- **A glass surface no longer lights up because the one around it is lit.** `--hub-glass-light-x/-y`
+  are custom properties, so they inherited: with the pointer over one column of a board, every
+  other column and card inside the same lit card took its pointer position and glowed as if the
+  pointer were over them. Every glass surface now resets both to `initial`; the inline values that
+  `provideHubGlassLight()` writes on the surfaces under the pointer still win.
+
 ## [22.17.1] - 2026-11-20
 
 ### Fixed

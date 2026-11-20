@@ -519,6 +519,12 @@
 [data-hub-glass] .hub-glass-surface,
 .hub-glass-surface[data-hub-glass],
 [data-theme=glass] .hub-glass-surface {
+  /* Custom properties inherit, so without this every surface inside a lit one (the cards of a
+     board column, the next column over) picked up its pointer position and glowed as if the
+     pointer were over it. provideHubGlassLight() writes the position inline, which wins over
+     this reset on the surfaces actually under the pointer. */
+  --hub-glass-light-x: initial;
+  --hub-glass-light-y: initial;
   --hub-sys-glass-opacity: calc(100% - 70% * var(--hub-sys-glass-strength));
   /* A band inside a glass surface (a dialog's footer) lets the surface's own tint show through
      instead of laying a second one over it. */
