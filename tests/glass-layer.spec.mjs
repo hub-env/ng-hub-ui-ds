@@ -45,6 +45,12 @@ const root = blocks.filter((b) => b.selectors.includes(':root'));
 const rootValue = (name) => root.map((b) => b.vars.get(name)).find((v) => v !== undefined);
 
 describe('glass layer', () => {
+	it('keeps the sheen out of sight while no pointer is over the surface', () => {
+		const sheen = surfaceBlocks.map((b) => b.vars.get('--hub-sys-glass-sheen')).find(Boolean);
+		// Resting at the top edge, every surface showed a glow beside the one under the pointer.
+		assert.match(sheen, /var\(--hub-glass-light-y,\s*calc\(-1 \* var\(--hub-sys-glass-light-size\)\)\)/);
+	});
+
 	it('declares the knobs on :root with their defaults', () => {
 		const defaults = {
 			'--hub-sys-glass-strength': '0.5',

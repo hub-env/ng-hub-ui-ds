@@ -5,6 +5,17 @@ All notable changes to `ng-hub-ui-ds` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [22.17.1] - 2026-11-20
+
+### Fixed
+
+- **The glass sheen only shows under the pointer.** With no pointer over a surface, the sheen
+  rested on its top edge, so with `--hub-sys-glass-light-strength` above 0 every glass surface
+  glowed at the top beside the one under the pointer, and a tall surface such as a sidebar read as
+  holding a second light. `--hub-glass-light-y` now defaults to one `--hub-sys-glass-light-size`
+  above the top edge, out of sight. Gloss and rim stay as they were. Without
+  `provideHubGlassLight()` from `ng-hub-ui-utils` there is no sheen at all.
+
 ## [22.17.0] - 2026-11-19
 
 ### Added

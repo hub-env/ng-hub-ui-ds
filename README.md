@@ -262,9 +262,10 @@ off:
 The derived values (`--hub-sys-glass-opacity`, `-filter`, `-rim`, `-sheen`,
 `-veil`, `-gloss`, `-inner-opacity`) exist only on `.hub-glass-surface` inside a
 glass scope. The pointer-following sheen needs `provideHubGlassLight()` from
-`ng-hub-ui-utils`, which writes `--hub-glass-light-x/-y`; without it the sheen
-stays at the top edge, and it is invisible unless `--hub-sys-glass-light-strength`
-is above 0.
+`ng-hub-ui-utils`, which writes `--hub-glass-light-x/-y`. With no pointer over a
+surface the sheen sits just above its top edge, out of sight, so without the
+provider there is no sheen at all; gloss and rim stay. It is also invisible unless
+`--hub-sys-glass-light-strength` is above 0.
 
 Accessibility: with `prefers-reduced-transparency: reduce`,
 `prefers-contrast: more`, forced colours, or a browser without `backdrop-filter`,

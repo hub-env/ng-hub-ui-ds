@@ -317,7 +317,6 @@ $hub-accents: (
 	dark: var(--hub-ref-color-gray-900, #212529)
 ) !default;
 
-
 // Additive override: pass ONLY the variants you add or retune, keeping the defaults.
 // Prefer this over replacing `$hub-accents` wholesale:
 //   @use 'ng-hub-ui-ds/styles/tokens/hub-tokens' with ($hub-accents-extra: (brand: #ff6b00));
@@ -700,8 +699,11 @@ $hub-accents-terminal: (
    The values are derived on the surface itself, not on the root, for two
    reasons: the strength can then be overridden on one surface, and the
    sheen can follow the pointer through `--hub-glass-light-x/-y`, which
-   provideHubGlassLight() (ng-hub-ui-utils) writes on the surface under it.
-   Without that provider the sheen stays at the top edge.
+   provideHubGlassLight() (ng-hub-ui-utils) writes on every surface under it.
+   With no pointer over a surface its sheen sits one light-size above the top
+   edge, out of sight: a resting glow on every surface read as a second light
+   next to the one under the pointer. Gloss and rim stay; they are the glass
+   at rest.
    ============================================================ */
 
 [data-hub-glass] .hub-glass-surface,
@@ -726,7 +728,8 @@ $hub-accents-terminal: (
 	--hub-sys-glass-rim: inset 0 1px 0 0
 		color-mix(in srgb, var(--hub-sys-glass-rim-color) calc(var(--hub-sys-glass-rim-strength) * 100%), transparent);
 	--hub-sys-glass-sheen: radial-gradient(
-		var(--hub-sys-glass-light-size) circle at var(--hub-glass-light-x, 50%) var(--hub-glass-light-y, 0%),
+		var(--hub-sys-glass-light-size) circle at var(--hub-glass-light-x, 50%)
+			var(--hub-glass-light-y, calc(-1 * var(--hub-sys-glass-light-size))),
 		color-mix(in srgb, var(--hub-sys-glass-light-color) calc(var(--hub-sys-glass-light-strength) * 100%), transparent),
 		transparent
 	);

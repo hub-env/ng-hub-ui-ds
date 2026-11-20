@@ -260,8 +260,10 @@ Los valores derivados (`--hub-sys-glass-opacity`, `-filter`, `-rim`, `-sheen`,
 `-veil`, `-gloss`, `-inner-opacity`) existen solo en `.hub-glass-surface` dentro
 de un ámbito glass. El brillo que sigue al puntero necesita
 `provideHubGlassLight()` de `ng-hub-ui-utils`, que escribe
-`--hub-glass-light-x/-y`; sin él el brillo se queda en el borde superior, y no se
-ve mientras `--hub-sys-glass-light-strength` sea 0.
+`--hub-glass-light-x/-y`. Sin el puntero encima, el brillo de una superficie queda
+justo por encima de su borde superior, fuera de la vista, así que sin el proveedor
+no hay brillo; el lustre y el filo se mantienen. Tampoco se ve mientras
+`--hub-sys-glass-light-strength` sea 0.
 
 Accesibilidad: con `prefers-reduced-transparency: reduce`, `prefers-contrast: more`,
 colores forzados o un navegador sin `backdrop-filter`, las superficies vuelven a
